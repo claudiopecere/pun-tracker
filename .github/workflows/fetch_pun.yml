@@ -4,7 +4,7 @@ on:
   schedule:
     # Ogni giorno alle 09:00 UTC (11:00 ora italiana)
     # GME pubblica i dati del giorno precedente entro le 08:00 UTC
-    - cron: '0 9 * * *'
+    - cron: '0 7 * * *'
   workflow_dispatch:
     inputs:
       data:
