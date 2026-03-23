@@ -1,0 +1,52 @@
+name: Download PUN giornaliero
+
+on:
+  schedule:
+    # Ogni giorno alle 09:00 UTC (11:00 ora italiana)
+    # GME pubblica i dati del giorno precedente entro le 08:00 UTC
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+    inputs:
+      data:
+        description: 'Data specifica (YYYY-MM-DD, lascia vuoto per ieri)'
+        required: false
+        default: ''
+
+jobs:
+  fetch-pun:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Crea cartella data se non esiste
+        run: mkdir -p data
+
+      - name: Scarica PUN
+        run: |
+          if [ -n "${{ github.event.inputs.data }}" ]; then
+            python fetch_pun.py "${{ github.event.inputs.data }}"
+          else
+            python fetch_pun.py
+          fi
+
+      - name: Commit e push se ci sono modifiche
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "PUN Bot"
+          git add data/pun.json
+          if git diff --staged --quiet; then
+            echo "Nessuna modifica da committare"
+          else
+            OGGI=$(date -u +"%Y-%m-%d")
+            git commit -m "PUN aggiornato: $OGGI"
+            git push
+          fi

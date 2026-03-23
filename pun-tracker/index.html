@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monitor PUN</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root{
+  --bg:#f8f7f4;--surface:#ffffff;--border:#e5e3de;--text:#1a1a18;
+  --muted:#6b6a66;--hint:#9e9d99;--accent:#1a4a8a;--accent-light:#e8f0fc;
+  --success:#1a6b3a;--success-bg:#e8f5ee;--danger:#8a1a1a;--danger-bg:#fceee8;
+  --radius:10px;--shadow:0 1px 3px rgba(0,0,0,.08);
+}
+@media(prefers-color-scheme:dark){
+  :root{--bg:#111110;--surface:#1c1c1a;--border:#2e2e2b;--text:#f0efe9;
+  --muted:#8a8a85;--hint:#5a5a56;--accent:#5b8fd4;--accent-light:#1a2a40;
+  --success:#4caf7d;--success-bg:#0d2318;--danger:#e07070;--danger-bg:#2a1010;}
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Georgia',serif;background:var(--bg);color:var(--text);min-height:100vh}
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:1.25rem 2rem;display:flex;align-items:baseline;gap:1rem}
+.header h1{font-size:1.4rem;font-weight:400;letter-spacing:-.01em}
+.header .sub{font-size:.8rem;color:var(--muted);font-family:monospace}
+.container{max-width:960px;margin:0 auto;padding:1.5rem 1.5rem}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:1.5rem}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem}
+.metric-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.5rem}
+.metric-value{font-size:1.8rem;font-weight:400;color:var(--text)}
+.metric-unit{font-size:.75rem;color:var(--hint);margin-top:2px}
+.metric-delta{font-size:.75rem;margin-top:4px}
+.delta-up{color:var(--danger)}.delta-down{color:var(--success)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1.25rem}
+.card-title{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:1rem}
+.tabs{display:flex;gap:0;margin-bottom:1.5rem;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;width:fit-content}
+.tab{padding:7px 18px;font-size:.8rem;cursor:pointer;border:none;background:transparent;color:var(--muted);font-family:inherit}
+.tab.active{background:var(--accent);color:#fff}
+.chart-wrap{position:relative;width:100%}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+th{padding:8px 10px;text-align:left;color:var(--muted);font-weight:400;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border)}
+td{padding:9px 10px;border-bottom:1px solid var(--border);color:var(--text)}
+tr:last-child td{border-bottom:none}
+.badge{display:inline-block;padding:2px 7px;border-radius:4px;font-size:.7rem;font-family:monospace}
+.badge-up{background:var(--danger-bg);color:var(--danger)}
+.badge-down{background:var(--success-bg);color:var(--success)}
+.status{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--muted);margin-bottom:1.25rem}
+.dot{width:8px;height:8px;border-radius:50%}
+.dot-ok{background:var(--success)}.dot-err{background:var(--danger)}.dot-loading{background:var(--accent);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.section{display:none}.section.active{display:block}
+.week-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:.85rem}
+.week-row:last-child{border-bottom:none}
+.week-label{color:var(--muted);font-size:.8rem}
+.empty{color:var(--hint);text-align:center;padding:2rem;font-size:.85rem;font-style:italic}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Monitor PUN</h1>
+  <span class="sub">Prezzo Unico Nazionale — €/MWh</span>
+</div>
+
+<div class="container">
+  <div class="status" id="status">
+    <div class="dot dot-loading" id="dot"></div>
+    <span id="status-text">Caricamento dati...</span>
+  </div>
+
+  <div class="metrics" id="metrics"></div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('andamento')">Andamento</button>
+    <button class="tab" onclick="switchTab('settimanale')">Settimana</button>
+    <button class="tab" onclick="switchTab('mensile')">Mese</button>
+    <button class="tab" onclick="switchTab('tabella')">Tabella</button>
+  </div>
+
+  <div id="tab-andamento" class="section active">
+    <div class="card">
+      <div class="card-title">Ultimi 30 giorni</div>
+      <div class="chart-wrap"><div style="height:260px;position:relative"><canvas id="c-andamento"></canvas></div></div>
+    </div>
+  </div>
+
+  <div id="tab-settimanale" class="section">
+    <div class="metrics" id="metrics-sett" style="margin-bottom:1.25rem"></div>
+    <div class="card">
+      <div class="card-title">Settimana corrente</div>
+      <div class="chart-wrap"><div style="height:200px;position:relative"><canvas id="c-sett"></canvas></div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Ultime 4 settimane — media</div>
+      <div id="weeks-list"></div>
+    </div>
+  </div>
+
+  <div id="tab-mensile" class="section">
+    <div class="metrics" id="metrics-mese" style="margin-bottom:1.25rem"></div>
+    <div class="card">
+      <div class="card-title">Mese corrente</div>
+      <div class="chart-wrap"><div style="height:220px;position:relative"><canvas id="c-mese"></canvas></div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Confronto ultimi 6 mesi</div>
+      <div class="chart-wrap"><div style="height:200px;position:relative"><canvas id="c-mesi"></canvas></div></div>
+    </div>
+  </div>
+
+  <div id="tab-tabella" class="section">
+    <div class="card">
+      <table>
+        <thead><tr><th>Data</th><th>PUN €/MWh</th><th>Var. giorno</th><th>Note</th></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Configurazione ──────────────────────────────────────────────
+// Sostituisci con il tuo username GitHub e nome del repository
+const GITHUB_USER = 'TUO_USERNAME';
+const GITHUB_REPO = 'pun-tracker';
+const DATA_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/data/pun.json`;
+// ────────────────────────────────────────────────────────────────
+
+let records = [];
+let charts = {};
+
+const ACCENT = '#1a4a8a';
+const ACCENT_ALPHA = 'rgba(26,74,138,0.1)';
+const RED = '#c0392b';
+const GREEN = '#1a6b3a';
+
+function fmt(v){ return v != null ? v.toFixed(2) : '—'; }
+function fmtDate(s){ if(!s) return ''; const [y,m,d]=s.split('-'); return d+'/'+m+'/'+y; }
+
+function stats(arr){
+  if(!arr.length) return null;
+  const vals = arr.map(r=>r.pun);
+  return { min:Math.min(...vals), max:Math.max(...vals), avg:vals.reduce((a,b)=>a+b,0)/vals.length, last:vals[vals.length-1], n:vals.length };
+}
+
+function getWeekRange(offset=0){
+  const now = new Date();
+  const dow = now.getDay()||7;
+  const mon = new Date(now); mon.setDate(now.getDate()-dow+1+offset*7);
+  const sun = new Date(mon); sun.setDate(mon.getDate()+6);
+  const f = d=>d.toISOString().split('T')[0];
+  return { from:f(mon), to:f(sun) };
+}
+
+function destroyChart(id){ if(charts[id]){ charts[id].destroy(); delete charts[id]; } }
+
+async function loadData(){
+  try {
+    const resp = await fetch(DATA_URL + '?t=' + Date.now());
+    if(!resp.ok) throw new Error('HTTP '+resp.status);
+    records = await resp.json();
+    records.sort((a,b)=>a.data.localeCompare(b.data));
+    setStatus('ok', `${records.length} record — aggiornato ${fmtDate(records.at(-1)?.data||'')}`);
+    renderAll();
+  } catch(e) {
+    setStatus('err', 'Errore caricamento dati: '+e.message);
+    console.error(e);
+  }
+}
+
+function setStatus(type, msg){
+  const dot = document.getElementById('dot');
+  const txt = document.getElementById('status-text');
+  dot.className = 'dot dot-'+(type==='ok'?'ok':type==='err'?'err':'loading');
+  txt.textContent = msg;
+}
+
+function renderAll(){
+  renderMetrics();
+  renderAndamento();
+  renderSettimanale();
+  renderMensile();
+  renderTabella();
+}
+
+function renderMetrics(){
+  const s = stats(records);
+  if(!s){ document.getElementById('metrics').innerHTML='<p class="empty">Nessun dato</p>'; return; }
+  const last = records.at(-1);
+  const prev = records.at(-2);
+  const delta = prev ? last.pun - prev.pun : null;
+  const deltaStr = delta!=null ? (delta>=0?'+':'')+delta.toFixed(2)+' €' : '';
+  const deltaClass = delta>0?'delta-up':delta<0?'delta-down':'';
+  const avg30 = stats(records.slice(-30));
+  document.getElementById('metrics').innerHTML = `
+    <div class="metric">
+      <div class="metric-label">Ultimo dato</div>
+      <div class="metric-value">${fmt(last.pun)}</div>
+      <div class="metric-unit">${fmtDate(last.data)}</div>
+      ${delta!=null?`<div class="metric-delta ${deltaClass}">${deltaStr} vs ieri</div>`:''}
+    </div>
+    <div class="metric">
+      <div class="metric-label">Media 30 giorni</div>
+      <div class="metric-value">${fmt(avg30?.avg)}</div>
+      <div class="metric-unit">€/MWh</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Min / Max 30gg</div>
+      <div class="metric-value" style="font-size:1.1rem">${fmt(avg30?.min)}<span style="color:var(--hint);font-size:.9rem"> / </span>${fmt(avg30?.max)}</div>
+      <div class="metric-unit">€/MWh</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Totale record</div>
+      <div class="metric-value">${records.length}</div>
+      <div class="metric-unit">giorni monitorati</div>
+    </div>
+  `;
+}
+
+function renderAndamento(){
+  const last30 = records.slice(-30);
+  destroyChart('andamento');
+  if(!last30.length) return;
+  const ctx = document.getElementById('c-andamento').getContext('2d');
+  charts['andamento'] = new Chart(ctx, {
+    type:'line',
+    data:{
+      labels: last30.map(r=>fmtDate(r.data)),
+      datasets:[{ data:last30.map(r=>r.pun), borderColor:ACCENT, backgroundColor:ACCENT_ALPHA, tension:0.35, pointRadius:2, fill:true }]
+    },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ y:{ticks:{callback:v=>v+'€'}}, x:{ticks:{autoSkip:true,maxRotation:45}} } }
+  });
+}
+
+function renderSettimanale(){
+  const {from,to} = getWeekRange(0);
+  const week = records.filter(r=>r.data>=from&&r.data<=to);
+  const s = stats(week);
+  const mg = document.getElementById('metrics-sett');
+  if(!s){ mg.innerHTML='<p class="empty">Nessun dato questa settimana</p>'; return; }
+  mg.innerHTML = `
+    <div class="metric"><div class="metric-label">Media settimana</div><div class="metric-value">${fmt(s.avg)}</div><div class="metric-unit">€/MWh</div></div>
+    <div class="metric"><div class="metric-label">Minimo</div><div class="metric-value">${fmt(s.min)}</div><div class="metric-unit">€/MWh</div></div>
+    <div class="metric"><div class="metric-label">Massimo</div><div class="metric-value">${fmt(s.max)}</div><div class="metric-unit">€/MWh</div></div>
+  `;
+  destroyChart('sett');
+  const ctx = document.getElementById('c-sett').getContext('2d');
+  charts['sett'] = new Chart(ctx, {
+    type:'bar',
+    data:{ labels:week.map(r=>fmtDate(r.data)), datasets:[{data:week.map(r=>r.pun),backgroundColor:ACCENT+'bb',borderRadius:4}] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{ticks:{callback:v=>v+'€'}}} }
+  });
+  let html='';
+  for(let w=-3;w<=0;w++){
+    const {from:f,to:t}=getWeekRange(w);
+    const wr=records.filter(r=>r.data>=f&&r.data<=t);
+    const ws=stats(wr); if(!ws) continue;
+    const label = w===0?'Settimana corrente':`${fmtDate(f)} – ${fmtDate(t)}`;
+    html+=`<div class="week-row"><span class="week-label">${label}</span><span>${fmt(ws.avg)} <span style="color:var(--hint);font-size:.75rem">€/MWh (${ws.n} giorni)</span></span></div>`;
+  }
+  document.getElementById('weeks-list').innerHTML = html||'<p class="empty">Dati insufficienti</p>';
+}
+
+function renderMensile(){
+  const now = new Date();
+  const mese = now.toISOString().substring(0,7);
+  const mr = records.filter(r=>r.data.startsWith(mese));
+  const s = stats(mr);
+  const mg = document.getElementById('metrics-mese');
+  if(!s){ mg.innerHTML='<p class="empty">Nessun dato questo mese</p>'; }else{
+    mg.innerHTML=`
+      <div class="metric"><div class="metric-label">Media mensile</div><div class="metric-value">${fmt(s.avg)}</div><div class="metric-unit">€/MWh</div></div>
+      <div class="metric"><div class="metric-label">Minimo</div><div class="metric-value">${fmt(s.min)}</div><div class="metric-unit">€/MWh</div></div>
+      <div class="metric"><div class="metric-label">Massimo</div><div class="metric-value">${fmt(s.max)}</div><div class="metric-unit">€/MWh</div></div>
+    `;
+  }
+  destroyChart('mese');
+  if(mr.length){
+    const ctx=document.getElementById('c-mese').getContext('2d');
+    charts['mese']=new Chart(ctx,{type:'line',data:{labels:mr.map(r=>fmtDate(r.data)),datasets:[{data:mr.map(r=>r.pun),borderColor:ACCENT,backgroundColor:ACCENT_ALPHA,tension:0.3,pointRadius:3,fill:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>v+'€'}},x:{ticks:{autoSkip:true,maxRotation:45}}}}});
+  }
+  destroyChart('mesi');
+  const allMesi=[...new Set(records.map(r=>r.data.substring(0,7)))].sort().slice(-6);
+  if(allMesi.length>1){
+    const meseNames=['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
+    const avgs=allMesi.map(m=>{const v=records.filter(r=>r.data.startsWith(m)).map(r=>r.pun);return v.length?v.reduce((a,b)=>a+b,0)/v.length:null;});
+    const ctx2=document.getElementById('c-mesi').getContext('2d');
+    charts['mesi']=new Chart(ctx2,{type:'bar',data:{labels:allMesi.map(m=>{ const[y,mo]=m.split('-'); return meseNames[parseInt(mo)-1]+' '+y.slice(2);}),datasets:[{data:avgs,backgroundColor:allMesi.map(m=>m===mese?ACCENT:ACCENT+'55'),borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>v?v.toFixed(0)+'€':''}}}}});
+  }
+}
+
+function renderTabella(){
+  const tbody=document.getElementById('tbody');
+  if(!records.length){tbody.innerHTML='<tr><td colspan="4" class="empty">Nessun dato</td></tr>';return;}
+  let html='';
+  records.slice().reverse().forEach((r,i,arr)=>{
+    const prev=arr[i+1];
+    const d=prev?r.pun-prev.pun:null;
+    const badge=d!=null?(d>0?`<span class="badge badge-up">+${d.toFixed(2)}</span>`:d<0?`<span class="badge badge-down">${d.toFixed(2)}</span>`:'—'):'—';
+    html+=`<tr><td>${fmtDate(r.data)}</td><td><strong>${fmt(r.pun)}</strong></td><td>${badge}</td><td style="color:var(--muted);font-size:.78rem">${r.note||''}</td></tr>`;
+  });
+  tbody.innerHTML=html;
+}
+
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach((t,i)=>{
+    const names=['andamento','settimanale','mensile','tabella'];
+    t.classList.toggle('active',names[i]===name);
+  });
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+}
+
+loadData();
+</script>
+</body>
+</html>
