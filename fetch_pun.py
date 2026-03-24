@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Scarica il PUN giornaliero dal GME (Gestore Mercati Energetici)
-e aggiorna data/pun.json nel repository.
+Scarica il PUN giornaliero da Papernest (fonte: dati GME rielaborati).
+Fallback: QualEnergia.
 """
 
 import json
@@ -10,83 +10,124 @@ import re
 import sys
 from datetime import date, datetime, timedelta
 import urllib.request
-import urllib.error
 
 DATA_FILE = "data/pun.json"
 
 
-def fetch_pun_from_gme(target_date: date) -> float | None:
+def fetch_html(url: str) -> str | None:
+    try:
+        req = urllib.request.Request(
+            url,
+            headers={
+                "User-Agent": (
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                    "AppleWebKit/537.36 (KHTML, like Gecko) "
+                    "Chrome/122.0.0.0 Safari/537.36"
+                ),
+                "Accept": "text/html,application/xhtml+xml,*/*",
+                "Accept-Language": "it-IT,it;q=0.9",
+            },
+        )
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            return resp.read().decode("utf-8", errors="replace")
+    except Exception as e:
+        print(f"[WARN] fetch fallito ({url[:70]}): {e}")
+        return None
+
+
+def parse_pun_from_papernest(html: str, target_date: date) -> float | None:
     """
-    Scarica il PUN dal file XML/CSV pubblicato dal GME.
-    GME pubblica i prezzi orari del giorno precedente.
-    URL: https://www.mercatoelettrico.org/It/Tools/Accessodati.aspx
-    oppure endpoint diretto dei prezzi zonali MGP.
+    Papernest pubblica una tabella con righe tipo:
+    <td>23/03/2026</td><td>0.1652</td>
     """
-    year = target_date.strftime("%Y")
-    month = target_date.strftime("%m")
-    day = target_date.strftime("%d")
-
-    # Endpoint XML dei prezzi MGP del GME
-    url = (
-        f"https://www.mercatoelettrico.org/DesktopModules/GmeDownload/API/ExcelDownload"
-        f"/downloadzipfile?DataInizio={day}{month}{year}&DataFine={day}{month}{year}"
-        f"&Mercato=MGP&Grandezza=PUN&Zona=PUN&Pagina=1"
+    day = target_date.strftime("%d/%m/%Y")
+    # Cerca la data nel formato DD/MM/YYYY seguita dal valore
+    pattern = re.compile(
+        re.escape(day) + r"[^<]*</td>\s*<td[^>]*>\s*([\d]+[.,][\d]+)"
     )
+    m = pattern.search(html)
+    if m:
+        val = float(m.group(1).replace(",", "."))
+        # Papernest riporta in €/kWh → converti in €/MWh
+        if val < 2:
+            val = round(val * 1000, 2)
+        return val
 
-    # Fallback: endpoint dati storici GME (CSV prezzi MGP)
-    url_csv = (
-        f"https://storico.mercatoelettrico.org/DesktopModules/GmeDownload/API/ExcelDownload"
-        f"/downloadzipfile?DataInizio={day}{month}{year}&DataFine={day}{month}{year}"
-        f"&Mercato=MGP&Grandezza=PUN&Zona=PUN&Pagina=1"
+    # Alternativa: cerca tutte le celle con date e valori
+    rows = re.findall(
+        r"(\d{2}/\d{2}/\d{4})[^<]*</td>\s*<td[^>]*>\s*([\d]+[.,][\d]+)",
+        html
     )
-
-    for attempt_url in [url, url_csv]:
-        try:
-            req = urllib.request.Request(
-                attempt_url,
-                headers={
-                    "User-Agent": "Mozilla/5.0 (compatible; PUN-Tracker/1.0)",
-                    "Accept": "*/*",
-                },
-            )
-            with urllib.request.urlopen(req, timeout=30) as resp:
-                content = resp.read().decode("utf-8", errors="replace")
-                # Il file contiene righe tipo: "01/01/2024;98.50;..."
-                # Cerca pattern numerici che rappresentano prezzi
-                numbers = re.findall(r"[\d]+[.,][\d]+", content)
-                if numbers:
-                    # Il PUN medio giornaliero è la media delle 24 ore
-                    values = []
-                    for n in numbers:
-                        try:
-                            v = float(n.replace(",", "."))
-                            if 0 < v < 1000:  # range ragionevole €/MWh
-                                values.append(v)
-                        except ValueError:
-                            pass
-                    if values:
-                        return round(sum(values) / len(values), 2)
-        except Exception as e:
-            print(f"[WARN] Tentativo fallito ({attempt_url[:60]}...): {e}")
-            continue
+    for d_str, v_str in rows:
+        if d_str == day:
+            val = float(v_str.replace(",", "."))
+            if val < 2:
+                val = round(val * 1000, 2)
+            return val
 
     return None
 
 
-def fetch_pun_entsoe(target_date: date) -> float | None:
+def fetch_from_papernest(target_date: date) -> float | None:
+    url = "https://www.papernest.it/luce-gas/mercato-energetico/pun/"
+    print(f"[INFO] Provo Papernest: {url}")
+    html = fetch_html(url)
+    if not html:
+        return None
+    val = parse_pun_from_papernest(html, target_date)
+    if val:
+        print(f"[OK] Papernest → {val} €/MWh")
+    return val
+
+
+def fetch_from_qualenergia(target_date: date) -> float | None:
     """
-    Fallback: ENTSO-E Transparency Platform (dati pubblici, no API key).
-    Restituisce il prezzo day-ahead per l'Italia Nord (approssimazione PUN).
+    QualEnergia pubblica il PUN nella barra in cima.
+    Estratta con regex sul testo 'PUN: NNN.NN €/MWh'.
+    Solo se la data corrisponde a oggi/ieri.
     """
-    # ENTSO-E richiede registrazione per API completa.
-    # Usiamo l'endpoint pubblico non autenticato per i prezzi IT.
-    day_str = target_date.strftime("%Y%m%d")
-    url = (
-        f"https://transparency.entsoe.eu/transmission-domain/r2/dayAheadPrices/show"
-        f"?name=&defaultValue=false&viewType=TABLE&areaCode=10Y0-RTE------F"  # placeholder
-        f"&atch=false&dateTime.dateTime={day_str}+00:00|UTC|DAY&dateTime.endDateTime={day_str}+23:00|UTC|DAY"
+    url = "https://www.qualenergia.it/"
+    print(f"[INFO] Provo QualEnergia: {url}")
+    html = fetch_html(url)
+    if not html:
+        return None
+    # Cerca pattern: PUN: 165.64 €/MWh (giorno)
+    m = re.search(r"PUN:\s*([\d]+[.,][\d]+)\s*€/MWh\s*\((\d+)\s*mar\b", html, re.I)
+    if not m:
+        m = re.search(r"PUN:\s*([\d]+[.,][\d]+)\s*€/MWh", html)
+    if m:
+        val = float(m.group(1).replace(",", "."))
+        if val > 0:
+            print(f"[OK] QualEnergia → {val} €/MWh")
+            return round(val, 2)
+    return None
+
+
+def fetch_from_abbassalebollette(target_date: date) -> float | None:
+    """
+    Abbassalebollette pubblica tabella mensile con PUN giornaliero.
+    """
+    year = target_date.strftime("%Y")
+    month_it = [
+        "", "gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno",
+        "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"
+    ][target_date.month]
+    url = f"https://www.abbassalebollette.it/glossario/pun-prezzo-unico-nazionale/"
+    print(f"[INFO] Provo AbbassaLeBollette: {url}")
+    html = fetch_html(url)
+    if not html:
+        return None
+    day = target_date.strftime("%d/%m/%Y")
+    pattern = re.compile(
+        re.escape(day) + r"[^<]*</td>\s*<td[^>]*>\s*([\d]+[.,][\d]+)"
     )
-    # ENTSO-E senza token ritorna HTML — skip, usiamo solo come placeholder
+    m = pattern.search(html)
+    if m:
+        val = float(m.group(1).replace(",", "."))
+        if val < 2:
+            val = round(val * 1000, 2)
+        print(f"[OK] AbbassaLeBollette → {val} €/MWh")
+        return val
     return None
 
 
@@ -116,40 +157,42 @@ def record_exists(records: list, date_str: str) -> bool:
 def main():
     records = load_data()
 
-    # Determina la data da scaricare (default: ieri, GME pubblica il giorno dopo)
+    # Data target: default ieri (GME pubblica il giorno dopo)
     if len(sys.argv) > 1:
         try:
             target = date.fromisoformat(sys.argv[1])
         except ValueError:
-            print(f"[ERR] Data non valida: {sys.argv[1]}. Usa formato YYYY-MM-DD.")
+            print(f"[ERR] Data non valida: {sys.argv[1]}")
             sys.exit(1)
     else:
         target = date.today() - timedelta(days=1)
 
     date_str = target.isoformat()
-    print(f"[INFO] Download PUN per {date_str}...")
+    print(f"[INFO] Download PUN per {date_str} ...")
 
     if record_exists(records, date_str):
         print(f"[SKIP] Dato già presente per {date_str}")
         sys.exit(0)
 
-    pun = fetch_pun_from_gme(target)
+    # Prova le fonti in ordine
+    pun = fetch_from_papernest(target)
 
     if pun is None:
-        pun = fetch_pun_entsoe(target)
+        pun = fetch_from_qualenergia(target)
 
     if pun is None:
-        print(f"[ERR] Impossibile scaricare il PUN per {date_str}")
-        print("[INFO] Controlla manualmente su https://www.mercatoelettrico.org")
-        # Non uscire con errore — permette al workflow di continuare
+        pun = fetch_from_abbassalebollette(target)
+
+    if pun is None:
+        print(f"[ERR] Nessuna fonte ha restituito il PUN per {date_str}")
+        print("[INFO] Inserisci il dato manualmente su github.com/claudiopecere/pun-tracker")
         sys.exit(0)
 
     record = {
         "data": date_str,
         "pun": pun,
         "picco": "",
-        "note": "import automatico GME",
-        "fonte": "GME",
+        "note": "import automatico",
         "ts": datetime.utcnow().isoformat() + "Z",
     }
 
