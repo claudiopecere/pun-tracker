@@ -10,19 +10,22 @@
   --bg:#f8f7f4;--surface:#ffffff;--border:#e5e3de;--text:#1a1a18;
   --muted:#6b6a66;--hint:#9e9d99;--accent:#1a4a8a;--accent-light:#e8f0fc;
   --success:#1a6b3a;--success-bg:#e8f5ee;--danger:#8a1a1a;--danger-bg:#fceee8;
-  --radius:10px;--shadow:0 1px 3px rgba(0,0,0,.08);
+  --ref:#b85c00;--ref-bg:#fff3e8;
+  --radius:10px;
 }
 @media(prefers-color-scheme:dark){
   :root{--bg:#111110;--surface:#1c1c1a;--border:#2e2e2b;--text:#f0efe9;
   --muted:#8a8a85;--hint:#5a5a56;--accent:#5b8fd4;--accent-light:#1a2a40;
-  --success:#4caf7d;--success-bg:#0d2318;--danger:#e07070;--danger-bg:#2a1010;}
+  --success:#4caf7d;--success-bg:#0d2318;--danger:#e07070;--danger-bg:#2a1010;
+  --ref:#e8943a;--ref-bg:#2a1a08;}
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Georgia',serif;background:var(--bg);color:var(--text);min-height:100vh}
-.header{background:var(--surface);border-bottom:1px solid var(--border);padding:1.25rem 2rem;display:flex;align-items:baseline;gap:1rem}
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:1.25rem 2rem;display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap}
 .header h1{font-size:1.4rem;font-weight:400;letter-spacing:-.01em}
 .header .sub{font-size:.8rem;color:var(--muted);font-family:monospace}
-.container{max-width:960px;margin:0 auto;padding:1.5rem 1.5rem}
+.ref-badge{font-size:.75rem;background:var(--ref-bg);color:var(--ref);padding:3px 10px;border-radius:4px;border:1px solid var(--ref);margin-left:auto}
+.container{max-width:960px;margin:0 auto;padding:1.5rem}
 .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:1.5rem}
 .metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem}
 .metric-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.5rem}
@@ -43,6 +46,7 @@ tr:last-child td{border-bottom:none}
 .badge{display:inline-block;padding:2px 7px;border-radius:4px;font-size:.7rem;font-family:monospace}
 .badge-up{background:var(--danger-bg);color:var(--danger)}
 .badge-down{background:var(--success-bg);color:var(--success)}
+.badge-ref{background:var(--ref-bg);color:var(--ref)}
 .status{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--muted);margin-bottom:1.25rem}
 .dot{width:8px;height:8px;border-radius:50%}
 .dot-ok{background:var(--success)}.dot-err{background:var(--danger)}.dot-loading{background:var(--accent);animation:pulse 1s infinite}
@@ -52,6 +56,10 @@ tr:last-child td{border-bottom:none}
 .week-row:last-child{border-bottom:none}
 .week-label{color:var(--muted);font-size:.8rem}
 .empty{color:var(--hint);text-align:center;padding:2rem;font-size:.85rem;font-style:italic}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:.75rem;font-size:.75rem;color:var(--muted)}
+.leg{display:flex;align-items:center;gap:5px}
+.leg-sq{width:10px;height:10px;border-radius:2px}
+.leg-line{width:18px;height:2px;border-top:2px dashed var(--ref)}
 </style>
 </head>
 <body>
@@ -59,6 +67,7 @@ tr:last-child td{border-bottom:none}
 <div class="header">
   <h1>Monitor PUN</h1>
   <span class="sub">Prezzo Unico Nazionale — €/MWh</span>
+  <span class="ref-badge">Riferimento fisso: 130 €/MWh</span>
 </div>
 
 <div class="container">
@@ -79,6 +88,10 @@ tr:last-child td{border-bottom:none}
   <div id="tab-andamento" class="section active">
     <div class="card">
       <div class="card-title">Ultimi 30 giorni</div>
+      <div class="legend">
+        <span class="leg"><span class="leg-sq" style="background:#1a4a8a"></span>PUN giornaliero</span>
+        <span class="leg"><span class="leg-line"></span>Prezzo fisso 130 €/MWh</span>
+      </div>
       <div class="chart-wrap"><div style="height:260px;position:relative"><canvas id="c-andamento"></canvas></div></div>
     </div>
   </div>
@@ -87,6 +100,10 @@ tr:last-child td{border-bottom:none}
     <div class="metrics" id="metrics-sett" style="margin-bottom:1.25rem"></div>
     <div class="card">
       <div class="card-title">Settimana corrente</div>
+      <div class="legend">
+        <span class="leg"><span class="leg-sq" style="background:#1a4a8a"></span>PUN giornaliero</span>
+        <span class="leg"><span class="leg-line"></span>Prezzo fisso 130 €/MWh</span>
+      </div>
       <div class="chart-wrap"><div style="height:200px;position:relative"><canvas id="c-sett"></canvas></div></div>
     </div>
     <div class="card">
@@ -99,10 +116,18 @@ tr:last-child td{border-bottom:none}
     <div class="metrics" id="metrics-mese" style="margin-bottom:1.25rem"></div>
     <div class="card">
       <div class="card-title">Mese corrente</div>
+      <div class="legend">
+        <span class="leg"><span class="leg-sq" style="background:#1a4a8a"></span>PUN giornaliero</span>
+        <span class="leg"><span class="leg-line"></span>Prezzo fisso 130 €/MWh</span>
+      </div>
       <div class="chart-wrap"><div style="height:220px;position:relative"><canvas id="c-mese"></canvas></div></div>
     </div>
     <div class="card">
-      <div class="card-title">Confronto ultimi 6 mesi</div>
+      <div class="card-title">Confronto ultimi 6 mesi — media vs riferimento</div>
+      <div class="legend">
+        <span class="leg"><span class="leg-sq" style="background:#1a4a8a"></span>Media mensile PUN</span>
+        <span class="leg"><span class="leg-line"></span>Prezzo fisso 130 €/MWh</span>
+      </div>
       <div class="chart-wrap"><div style="height:200px;position:relative"><canvas id="c-mesi"></canvas></div></div>
     </div>
   </div>
@@ -110,7 +135,7 @@ tr:last-child td{border-bottom:none}
   <div id="tab-tabella" class="section">
     <div class="card">
       <table>
-        <thead><tr><th>Data</th><th>PUN €/MWh</th><th>Var. giorno</th><th>Note</th></tr></thead>
+        <thead><tr><th>Data</th><th>PUN €/MWh</th><th>Var. giorno</th><th>vs 130 €/MWh</th><th>Note</th></tr></thead>
         <tbody id="tbody"></tbody>
       </table>
     </div>
@@ -118,20 +143,16 @@ tr:last-child td{border-bottom:none}
 </div>
 
 <script>
-// ── Configurazione ──────────────────────────────────────────────
-// Sostituisci con il tuo username GitHub e nome del repository
 const GITHUB_USER = 'claudiopecere';
 const GITHUB_REPO = 'pun-tracker';
 const DATA_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/data/pun.json`;
-// ────────────────────────────────────────────────────────────────
+const REF = 130; // €/MWh prezzo fisso di riferimento
+const REF_COLOR = '#b85c00';
+const ACCENT = '#1a4a8a';
+const ACCENT_ALPHA = 'rgba(26,74,138,0.1)';
 
 let records = [];
 let charts = {};
-
-const ACCENT = '#1a4a8a';
-const ACCENT_ALPHA = 'rgba(26,74,138,0.1)';
-const RED = '#c0392b';
-const GREEN = '#1a6b3a';
 
 function fmt(v){ return v != null ? v.toFixed(2) : '—'; }
 function fmtDate(s){ if(!s) return ''; const [y,m,d]=s.split('-'); return d+'/'+m+'/'+y; }
@@ -151,6 +172,10 @@ function getWeekRange(offset=0){
   return { from:f(mon), to:f(sun) };
 }
 
+function refLine(count){
+  return { label:'Prezzo fisso 130', data:Array(count).fill(REF), borderColor:REF_COLOR, borderDash:[6,3], borderWidth:1.5, pointRadius:0, type:'line', fill:false, tension:0 };
+}
+
 function destroyChart(id){ if(charts[id]){ charts[id].destroy(); delete charts[id]; } }
 
 async function loadData(){
@@ -163,15 +188,12 @@ async function loadData(){
     renderAll();
   } catch(e) {
     setStatus('err', 'Errore caricamento dati: '+e.message);
-    console.error(e);
   }
 }
 
 function setStatus(type, msg){
-  const dot = document.getElementById('dot');
-  const txt = document.getElementById('status-text');
-  dot.className = 'dot dot-'+(type==='ok'?'ok':type==='err'?'err':'loading');
-  txt.textContent = msg;
+  document.getElementById('dot').className = 'dot dot-'+(type==='ok'?'ok':type==='err'?'err':'loading');
+  document.getElementById('status-text').textContent = msg;
 }
 
 function renderAll(){
@@ -191,12 +213,21 @@ function renderMetrics(){
   const deltaStr = delta!=null ? (delta>=0?'+':'')+delta.toFixed(2)+' €' : '';
   const deltaClass = delta>0?'delta-up':delta<0?'delta-down':'';
   const avg30 = stats(records.slice(-30));
+  const vsRef = last.pun - REF;
+  const vsRefStr = (vsRef>=0?'+':'')+vsRef.toFixed(2);
+  const vsRefClass = vsRef>0?'delta-up':'delta-down';
   document.getElementById('metrics').innerHTML = `
     <div class="metric">
       <div class="metric-label">Ultimo dato</div>
       <div class="metric-value">${fmt(last.pun)}</div>
       <div class="metric-unit">${fmtDate(last.data)}</div>
       ${delta!=null?`<div class="metric-delta ${deltaClass}">${deltaStr} vs ieri</div>`:''}
+    </div>
+    <div class="metric">
+      <div class="metric-label">Vs riferimento 130</div>
+      <div class="metric-value" style="font-size:1.4rem">${vsRefStr}</div>
+      <div class="metric-unit">€/MWh rispetto al fisso</div>
+      <div class="metric-delta ${vsRefClass}">${vsRef>0?'mercato sopra fisso':'mercato sotto fisso'}</div>
     </div>
     <div class="metric">
       <div class="metric-label">Media 30 giorni</div>
@@ -208,11 +239,6 @@ function renderMetrics(){
       <div class="metric-value" style="font-size:1.1rem">${fmt(avg30?.min)}<span style="color:var(--hint);font-size:.9rem"> / </span>${fmt(avg30?.max)}</div>
       <div class="metric-unit">€/MWh</div>
     </div>
-    <div class="metric">
-      <div class="metric-label">Totale record</div>
-      <div class="metric-value">${records.length}</div>
-      <div class="metric-unit">giorni monitorati</div>
-    </div>
   `;
 }
 
@@ -222,10 +248,12 @@ function renderAndamento(){
   if(!last30.length) return;
   const ctx = document.getElementById('c-andamento').getContext('2d');
   charts['andamento'] = new Chart(ctx, {
-    type:'line',
     data:{
       labels: last30.map(r=>fmtDate(r.data)),
-      datasets:[{ data:last30.map(r=>r.pun), borderColor:ACCENT, backgroundColor:ACCENT_ALPHA, tension:0.35, pointRadius:2, fill:true }]
+      datasets:[
+        { type:'line', label:'PUN', data:last30.map(r=>r.pun), borderColor:ACCENT, backgroundColor:ACCENT_ALPHA, tension:0.35, pointRadius:2, fill:true },
+        refLine(last30.length)
+      ]
     },
     options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ y:{ticks:{callback:v=>v+'€'}}, x:{ticks:{autoSkip:true,maxRotation:45}} } }
   });
@@ -237,16 +265,23 @@ function renderSettimanale(){
   const s = stats(week);
   const mg = document.getElementById('metrics-sett');
   if(!s){ mg.innerHTML='<p class="empty">Nessun dato questa settimana</p>'; return; }
+  const avgVsRef = s.avg - REF;
+  const avgVsRefCls = avgVsRef > 0 ? 'delta-up' : 'delta-down';
   mg.innerHTML = `
-    <div class="metric"><div class="metric-label">Media settimana</div><div class="metric-value">${fmt(s.avg)}</div><div class="metric-unit">€/MWh</div></div>
+    <div class="metric"><div class="metric-label">Media settimana</div><div class="metric-value">${fmt(s.avg)}</div><div class="metric-unit">€/MWh</div><div class="metric-delta ${avgVsRefCls}">${avgVsRef>=0?'+':''}${avgVsRef.toFixed(2)} vs fisso</div></div>
     <div class="metric"><div class="metric-label">Minimo</div><div class="metric-value">${fmt(s.min)}</div><div class="metric-unit">€/MWh</div></div>
     <div class="metric"><div class="metric-label">Massimo</div><div class="metric-value">${fmt(s.max)}</div><div class="metric-unit">€/MWh</div></div>
   `;
   destroyChart('sett');
   const ctx = document.getElementById('c-sett').getContext('2d');
   charts['sett'] = new Chart(ctx, {
-    type:'bar',
-    data:{ labels:week.map(r=>fmtDate(r.data)), datasets:[{data:week.map(r=>r.pun),backgroundColor:ACCENT+'bb',borderRadius:4}] },
+    data:{
+      labels:week.map(r=>fmtDate(r.data)),
+      datasets:[
+        { type:'bar', data:week.map(r=>r.pun), backgroundColor: week.map(r=>r.pun>REF?'rgba(139,26,26,0.65)':'rgba(26,74,138,0.7)'), borderRadius:4 },
+        refLine(week.length)
+      ]
+    },
     options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{ticks:{callback:v=>v+'€'}}} }
   });
   let html='';
@@ -254,8 +289,13 @@ function renderSettimanale(){
     const {from:f,to:t}=getWeekRange(w);
     const wr=records.filter(r=>r.data>=f&&r.data<=t);
     const ws=stats(wr); if(!ws) continue;
+    const vr = ws.avg - REF;
     const label = w===0?'Settimana corrente':`${fmtDate(f)} – ${fmtDate(t)}`;
-    html+=`<div class="week-row"><span class="week-label">${label}</span><span>${fmt(ws.avg)} <span style="color:var(--hint);font-size:.75rem">€/MWh (${ws.n} giorni)</span></span></div>`;
+    html+=`<div class="week-row">
+      <span class="week-label">${label}</span>
+      <span>${fmt(ws.avg)} <span style="color:var(--hint);font-size:.75rem">€/MWh</span> &nbsp;
+      <span class="badge ${vr>0?'badge-up':'badge-down'}">${vr>=0?'+':''}${vr.toFixed(1)} vs 130</span></span>
+    </div>`;
   }
   document.getElementById('weeks-list').innerHTML = html||'<p class="empty">Dati insufficienti</p>';
 }
@@ -267,8 +307,9 @@ function renderMensile(){
   const s = stats(mr);
   const mg = document.getElementById('metrics-mese');
   if(!s){ mg.innerHTML='<p class="empty">Nessun dato questo mese</p>'; }else{
+    const avgVsRef = s.avg - REF;
     mg.innerHTML=`
-      <div class="metric"><div class="metric-label">Media mensile</div><div class="metric-value">${fmt(s.avg)}</div><div class="metric-unit">€/MWh</div></div>
+      <div class="metric"><div class="metric-label">Media mensile</div><div class="metric-value">${fmt(s.avg)}</div><div class="metric-unit">€/MWh</div><div class="metric-delta ${avgVsRef>0?'delta-up':'delta-down'}">${avgVsRef>=0?'+':''}${avgVsRef.toFixed(2)} vs fisso</div></div>
       <div class="metric"><div class="metric-label">Minimo</div><div class="metric-value">${fmt(s.min)}</div><div class="metric-unit">€/MWh</div></div>
       <div class="metric"><div class="metric-label">Massimo</div><div class="metric-value">${fmt(s.max)}</div><div class="metric-unit">€/MWh</div></div>
     `;
@@ -276,27 +317,47 @@ function renderMensile(){
   destroyChart('mese');
   if(mr.length){
     const ctx=document.getElementById('c-mese').getContext('2d');
-    charts['mese']=new Chart(ctx,{type:'line',data:{labels:mr.map(r=>fmtDate(r.data)),datasets:[{data:mr.map(r=>r.pun),borderColor:ACCENT,backgroundColor:ACCENT_ALPHA,tension:0.3,pointRadius:3,fill:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>v+'€'}},x:{ticks:{autoSkip:true,maxRotation:45}}}}});
+    charts['mese']=new Chart(ctx,{
+      data:{
+        labels:mr.map(r=>fmtDate(r.data)),
+        datasets:[
+          { type:'line', label:'PUN', data:mr.map(r=>r.pun), borderColor:ACCENT, backgroundColor:ACCENT_ALPHA, tension:0.3, pointRadius:3, fill:true },
+          refLine(mr.length)
+        ]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>v+'€'}},x:{ticks:{autoSkip:true,maxRotation:45}}}}
+    });
   }
   destroyChart('mesi');
   const allMesi=[...new Set(records.map(r=>r.data.substring(0,7)))].sort().slice(-6);
   if(allMesi.length>1){
     const meseNames=['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
-    const avgs=allMesi.map(m=>{const v=records.filter(r=>r.data.startsWith(m)).map(r=>r.pun);return v.length?v.reduce((a,b)=>a+b,0)/v.length:null;});
+    const avgs=allMesi.map(m=>{const v=records.filter(r=>r.data.startsWith(m)).map(r=>r.pun);return v.length?+(v.reduce((a,b)=>a+b,0)/v.length).toFixed(2):null;});
     const ctx2=document.getElementById('c-mesi').getContext('2d');
-    charts['mesi']=new Chart(ctx2,{type:'bar',data:{labels:allMesi.map(m=>{ const[y,mo]=m.split('-'); return meseNames[parseInt(mo)-1]+' '+y.slice(2);}),datasets:[{data:avgs,backgroundColor:allMesi.map(m=>m===mese?ACCENT:ACCENT+'55'),borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>v?v.toFixed(0)+'€':''}}}}});
+    charts['mesi']=new Chart(ctx2,{
+      data:{
+        labels:allMesi.map(m=>{ const[y,mo]=m.split('-'); return meseNames[parseInt(mo)-1]+' '+y.slice(2);}),
+        datasets:[
+          { type:'bar', data:avgs, backgroundColor:avgs.map(v=>v>REF?'rgba(139,26,26,0.65)':'rgba(26,74,138,0.7)'), borderRadius:4 },
+          refLine(allMesi.length)
+        ]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>v?v.toFixed(0)+'€':''}}}}
+    });
   }
 }
 
 function renderTabella(){
   const tbody=document.getElementById('tbody');
-  if(!records.length){tbody.innerHTML='<tr><td colspan="4" class="empty">Nessun dato</td></tr>';return;}
+  if(!records.length){tbody.innerHTML='<tr><td colspan="5" class="empty">Nessun dato</td></tr>';return;}
   let html='';
   records.slice().reverse().forEach((r,i,arr)=>{
     const prev=arr[i+1];
     const d=prev?r.pun-prev.pun:null;
     const badge=d!=null?(d>0?`<span class="badge badge-up">+${d.toFixed(2)}</span>`:d<0?`<span class="badge badge-down">${d.toFixed(2)}</span>`:'—'):'—';
-    html+=`<tr><td>${fmtDate(r.data)}</td><td><strong>${fmt(r.pun)}</strong></td><td>${badge}</td><td style="color:var(--muted);font-size:.78rem">${r.note||''}</td></tr>`;
+    const vr = r.pun - REF;
+    const vrBadge = `<span class="badge ${vr>0?'badge-up':'badge-down'}">${vr>=0?'+':''}${vr.toFixed(2)}</span>`;
+    html+=`<tr><td>${fmtDate(r.data)}</td><td><strong>${fmt(r.pun)}</strong></td><td>${badge}</td><td>${vrBadge}</td><td style="color:var(--muted);font-size:.78rem">${r.note||''}</td></tr>`;
   });
   tbody.innerHTML=html;
 }
