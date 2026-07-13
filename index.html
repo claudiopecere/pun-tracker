@@ -440,22 +440,23 @@ function renderMensile(){
   if(allMesi.length>=1){
     const meseNames=['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
     const saldi=allMesi.map(m=>{
+      // la media mensile (dato GME definitivo) prevale se presente
+      const avg = monthlyAvgs[m];
+      if(avg!=null){
+        const costoMercato = avg/1000*PERDITE*KWH_MESE;
+        const costoFisso = REF/1000*KWH_MESE;
+        return +(costoMercato - costoFisso).toFixed(0);
+      }
       const rr=records.filter(r=>r.data.startsWith(m));
       if(rr.length){
-        // dati giornalieri: saldo pesato giorno per giorno
         return +saldoCumulato(rr).toFixed(0);
       }
-      // fallback: media mensile × consumo totale del mese
-      const avg = monthlyAvgs[m];
-      if(avg==null) return 0;
-      const costoMercato = avg/1000*PERDITE*KWH_MESE;
-      const costoFisso = REF/1000*KWH_MESE;
-      return +(costoMercato - costoFisso).toFixed(0);
+      return 0;
     });
     const labels = allMesi.map(m=>{
       const[y,mo]=m.split('-');
       const base = meseNames[parseInt(mo)-1]+' '+y.slice(2);
-      return mesiGiornalieri.has(m) ? base : base+' *';
+      return monthlyAvgs[m]!=null ? base+' *' : base;
     });
     const ctx2=document.getElementById('c-mesi').getContext('2d');
     charts['mesi']=new Chart(ctx2,{
