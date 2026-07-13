@@ -47,12 +47,13 @@ tr:last-child td{border-bottom:none}
 .badge-up{background:var(--danger-bg);color:var(--danger)}
 .badge-down{background:var(--success-bg);color:var(--success)}
 .badge-ref{background:var(--ref-bg);color:var(--ref)}
+.badge-day{background:var(--accent-light);color:var(--accent);font-size:.65rem}
 .status{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--muted);margin-bottom:1.25rem}
 .dot{width:8px;height:8px;border-radius:50%}
 .dot-ok{background:var(--success)}.dot-err{background:var(--danger)}.dot-loading{background:var(--accent);animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 .section{display:none}.section.active{display:block}
-.week-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:.85rem}
+.week-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:.85rem;flex-wrap:wrap;gap:4px}
 .week-row:last-child{border-bottom:none}
 .week-label{color:var(--muted);font-size:.8rem}
 .empty{color:var(--hint);text-align:center;padding:2rem;font-size:.85rem;font-style:italic}
@@ -60,6 +61,9 @@ tr:last-child td{border-bottom:none}
 .leg{display:flex;align-items:center;gap:5px}
 .leg-sq{width:10px;height:10px;border-radius:2px}
 .leg-line{width:18px;height:2px;border-top:2px dashed var(--ref)}
+.saldo-strip{border-radius:var(--radius);padding:.875rem 1.25rem;margin-bottom:1.25rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem}
+.saldo-strip .lbl{font-size:.8rem}
+.saldo-strip .val{font-size:1.5rem;font-weight:500}
 </style>
 </head>
 <body>
@@ -67,7 +71,7 @@ tr:last-child td{border-bottom:none}
 <div class="header">
   <h1>Monitor PUN</h1>
   <span class="sub">Prezzo Unico Nazionale — €/MWh</span>
-  <span class="ref-badge">Riferimento fisso: 130 €/MWh</span>
+  <span class="ref-badge">Fisso: 130 €/MWh · 35.000 kWh/mese</span>
 </div>
 
 <div class="container">
@@ -87,47 +91,45 @@ tr:last-child td{border-bottom:none}
 
   <div id="tab-andamento" class="section active">
     <div class="card">
-      <div class="card-title">Ultimi 30 giorni</div>
+      <div class="card-title">Ultimi 30 giorni — PUN vs riferimento</div>
       <div class="legend">
         <span class="leg"><span class="leg-sq" style="background:#1a4a8a"></span>PUN giornaliero</span>
-        <span class="leg"><span class="leg-line"></span>Prezzo fisso 130 €/MWh</span>
+        <span class="leg"><span class="leg-line"></span>Fisso 130 €/MWh</span>
       </div>
-      <div class="chart-wrap"><div style="height:260px;position:relative"><canvas id="c-andamento"></canvas></div></div>
+      <div class="chart-wrap"><div style="height:230px;position:relative"><canvas id="c-andamento"></canvas></div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Risparmio / maggior costo giornaliero col fisso (€)</div>
+      <div class="legend">
+        <span class="leg"><span class="leg-sq" style="background:rgba(26,107,58,0.7)"></span>Risparmio col fisso</span>
+        <span class="leg"><span class="leg-sq" style="background:rgba(139,26,26,0.65)"></span>Maggior costo col fisso</span>
+      </div>
+      <div class="chart-wrap"><div style="height:200px;position:relative"><canvas id="c-diff"></canvas></div></div>
     </div>
   </div>
 
   <div id="tab-settimanale" class="section">
+    <div class="saldo-strip" id="saldo-sett"></div>
     <div class="metrics" id="metrics-sett" style="margin-bottom:1.25rem"></div>
     <div class="card">
-      <div class="card-title">Settimana corrente</div>
-      <div class="legend">
-        <span class="leg"><span class="leg-sq" style="background:#1a4a8a"></span>PUN giornaliero</span>
-        <span class="leg"><span class="leg-line"></span>Prezzo fisso 130 €/MWh</span>
-      </div>
+      <div class="card-title">Settimana corrente — differenziale giornaliero €</div>
       <div class="chart-wrap"><div style="height:200px;position:relative"><canvas id="c-sett"></canvas></div></div>
     </div>
     <div class="card">
-      <div class="card-title">Ultime 4 settimane — media</div>
+      <div class="card-title">Ultime 4 settimane — saldo cumulato</div>
       <div id="weeks-list"></div>
     </div>
   </div>
 
   <div id="tab-mensile" class="section">
+    <div class="saldo-strip" id="saldo-mese"></div>
     <div class="metrics" id="metrics-mese" style="margin-bottom:1.25rem"></div>
     <div class="card">
-      <div class="card-title">Mese corrente</div>
-      <div class="legend">
-        <span class="leg"><span class="leg-sq" style="background:#1a4a8a"></span>PUN giornaliero</span>
-        <span class="leg"><span class="leg-line"></span>Prezzo fisso 130 €/MWh</span>
-      </div>
+      <div class="card-title">Mese corrente — differenziale giornaliero €</div>
       <div class="chart-wrap"><div style="height:220px;position:relative"><canvas id="c-mese"></canvas></div></div>
     </div>
     <div class="card">
-      <div class="card-title">Confronto ultimi 6 mesi — media vs riferimento</div>
-      <div class="legend">
-        <span class="leg"><span class="leg-sq" style="background:#1a4a8a"></span>Media mensile PUN</span>
-        <span class="leg"><span class="leg-line"></span>Prezzo fisso 130 €/MWh</span>
-      </div>
+      <div class="card-title">Saldo mensile cumulato — ultimi 6 mesi</div>
       <div class="chart-wrap"><div style="height:200px;position:relative"><canvas id="c-mesi"></canvas></div></div>
     </div>
   </div>
@@ -135,7 +137,7 @@ tr:last-child td{border-bottom:none}
   <div id="tab-tabella" class="section">
     <div class="card">
       <table>
-        <thead><tr><th>Data</th><th>PUN €/MWh</th><th>Var. giorno</th><th>vs 130 €/MWh</th><th>Note</th></tr></thead>
+        <thead><tr><th>Data</th><th>Giorno</th><th>PUN</th><th>kWh stimati</th><th>Diff. € col fisso</th><th>Note</th></tr></thead>
         <tbody id="tbody"></tbody>
       </table>
     </div>
@@ -143,24 +145,101 @@ tr:last-child td{border-bottom:none}
 </div>
 
 <script>
+// ══════════════ CONFIGURAZIONE ══════════════
 const GITHUB_USER = 'claudiopecere';
 const GITHUB_REPO = 'pun-tracker';
 const DATA_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/data/pun.json`;
-const REF = 130; // €/MWh prezzo fisso di riferimento
+
+const REF = 130;              // €/MWh prezzo fisso (include perdite)
+const KWH_MESE = 35000;       // consumo mensile totale
+const PERDITE = 1.10;         // perdite di rete sul PUN di mercato
+const PESO_SABATO = 0.30;     // consumo sabato vs feriale
+const PESO_FESTIVO = 0.05;    // consumo domenica/festivi vs feriale
+// ═════════════════════════════════════════════
+
 const REF_COLOR = '#b85c00';
 const ACCENT = '#1a4a8a';
 const ACCENT_ALPHA = 'rgba(26,74,138,0.1)';
+const GREEN = 'rgba(26,107,58,0.7)';
+const RED = 'rgba(139,26,26,0.65)';
 
 let records = [];
 let charts = {};
 
+// ── Festività italiane ──
+function pasqua(y){ // algoritmo di Gauss
+  const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,
+  f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,
+  i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),
+  mo=Math.floor((h+l-7*m+114)/31),da=((h+l-7*m+114)%31)+1;
+  return new Date(y,mo-1,da);
+}
+function isFestivo(dateStr){
+  const d = new Date(dateStr+'T12:00:00');
+  const y = d.getFullYear(), m = d.getMonth()+1, g = d.getDate();
+  const fisse = ['1-1','6-1','25-4','1-5','2-6','15-8','1-11','8-12','25-12','26-12'];
+  if(fisse.includes(g+'-'+m)) return true;
+  const p = pasqua(y);
+  const pasquetta = new Date(p); pasquetta.setDate(p.getDate()+1);
+  if(d.toDateString()===p.toDateString()) return true;
+  if(d.toDateString()===pasquetta.toDateString()) return true;
+  return false;
+}
+function pesoGiorno(dateStr){
+  const dow = new Date(dateStr+'T12:00:00').getDay();
+  if(isFestivo(dateStr) || dow===0) return PESO_FESTIVO;  // domenica o festivo
+  if(dow===6) return PESO_SABATO;                          // sabato
+  return 1.0;                                              // feriale
+}
+function tipoGiorno(dateStr){
+  const dow = new Date(dateStr+'T12:00:00').getDay();
+  if(isFestivo(dateStr)) return 'festivo';
+  if(dow===0) return 'domenica';
+  if(dow===6) return 'sabato';
+  return 'feriale';
+}
+
+// somma pesi del mese di una data → per ripartire i 35.000 kWh
+const pesiMeseCache = {};
+function sommaPesiMese(ym){
+  if(pesiMeseCache[ym]) return pesiMeseCache[ym];
+  const [y,m] = ym.split('-').map(Number);
+  const giorni = new Date(y, m, 0).getDate();
+  let tot = 0;
+  for(let g=1; g<=giorni; g++){
+    const ds = `${y}-${String(m).padStart(2,'0')}-${String(g).padStart(2,'0')}`;
+    tot += pesoGiorno(ds);
+  }
+  pesiMeseCache[ym] = tot;
+  return tot;
+}
+
+// kWh stimati per un giorno specifico
+function kwhGiorno(dateStr){
+  const ym = dateStr.substring(0,7);
+  return KWH_MESE * pesoGiorno(dateStr) / sommaPesiMese(ym);
+}
+
+// Differenziale €: positivo = risparmio col fisso, negativo = maggior costo col fisso
+// costo mercato = PUN/1000 * 1.10 * kWh ; costo fisso = REF/1000 * kWh
+function diffGiorno(r){
+  const kwh = kwhGiorno(r.data);
+  const costoMercato = r.pun / 1000 * PERDITE * kwh;
+  const costoFisso = REF / 1000 * kwh;
+  return { kwh, diff: costoMercato - costoFisso }; // >0 → mercato più caro → risparmio col fisso
+}
+
 function fmt(v){ return v != null ? v.toFixed(2) : '—'; }
 function fmtDate(s){ if(!s) return ''; const [y,m,d]=s.split('-'); return d+'/'+m+'/'+y; }
+function fmtEur(v){ return (v>=0?'+':'')+v.toLocaleString('it-IT',{style:'currency',currency:'EUR',minimumFractionDigits:0,maximumFractionDigits:0}); }
 
 function stats(arr){
   if(!arr.length) return null;
   const vals = arr.map(r=>r.pun);
-  return { min:Math.min(...vals), max:Math.max(...vals), avg:vals.reduce((a,b)=>a+b,0)/vals.length, last:vals[vals.length-1], n:vals.length };
+  return { min:Math.min(...vals), max:Math.max(...vals), avg:vals.reduce((a,b)=>a+b,0)/vals.length, n:vals.length };
+}
+function saldoCumulato(arr){
+  return arr.reduce((a,r)=>a+diffGiorno(r).diff, 0);
 }
 
 function getWeekRange(offset=0){
@@ -173,9 +252,8 @@ function getWeekRange(offset=0){
 }
 
 function refLine(count){
-  return { label:'Prezzo fisso 130', data:Array(count).fill(REF), borderColor:REF_COLOR, borderDash:[6,3], borderWidth:1.5, pointRadius:0, type:'line', fill:false, tension:0 };
+  return { label:'Fisso 130', data:Array(count).fill(REF), borderColor:REF_COLOR, borderDash:[6,3], borderWidth:1.5, pointRadius:0, type:'line', fill:false, tension:0 };
 }
-
 function destroyChart(id){ if(charts[id]){ charts[id].destroy(); delete charts[id]; } }
 
 async function loadData(){
@@ -183,6 +261,8 @@ async function loadData(){
     const resp = await fetch(DATA_URL + '?t=' + Date.now());
     if(!resp.ok) throw new Error('HTTP '+resp.status);
     records = await resp.json();
+    // considera solo record giornalieri (ignora medie mensili tipo 2026-01-01 con note "media mensile")
+    records = records.filter(r => !(r.note||'').includes('media mensile'));
     records.sort((a,b)=>a.data.localeCompare(b.data));
     setStatus('ok', `${records.length} record — aggiornato ${fmtDate(records.at(-1)?.data||'')}`);
     renderAll();
@@ -208,43 +288,37 @@ function renderMetrics(){
   const s = stats(records);
   if(!s){ document.getElementById('metrics').innerHTML='<p class="empty">Nessun dato</p>'; return; }
   const last = records.at(-1);
-  const prev = records.at(-2);
-  const delta = prev ? last.pun - prev.pun : null;
-  const deltaStr = delta!=null ? (delta>=0?'+':'')+delta.toFixed(2)+' €' : '';
-  const deltaClass = delta>0?'delta-up':delta<0?'delta-down':'';
-  const avg30 = stats(records.slice(-30));
-  const vsRef = last.pun - REF;
-  const vsRefStr = (vsRef>=0?'+':'')+vsRef.toFixed(2);
-  const vsRefClass = vsRef>0?'delta-up':'delta-down';
+  const dLast = diffGiorno(last);
+  const saldo30 = saldoCumulato(records.slice(-30));
+  const saldoTot = saldoCumulato(records);
   document.getElementById('metrics').innerHTML = `
     <div class="metric">
-      <div class="metric-label">Ultimo dato</div>
+      <div class="metric-label">Ultimo PUN</div>
       <div class="metric-value">${fmt(last.pun)}</div>
-      <div class="metric-unit">${fmtDate(last.data)}</div>
-      ${delta!=null?`<div class="metric-delta ${deltaClass}">${deltaStr} vs ieri</div>`:''}
+      <div class="metric-unit">${fmtDate(last.data)} · ${tipoGiorno(last.data)}</div>
     </div>
     <div class="metric">
-      <div class="metric-label">Vs riferimento 130</div>
-      <div class="metric-value" style="font-size:1.4rem">${vsRefStr}</div>
-      <div class="metric-unit">€/MWh rispetto al fisso</div>
-      <div class="metric-delta ${vsRefClass}">${vsRef>0?'mercato sopra fisso':'mercato sotto fisso'}</div>
+      <div class="metric-label">Diff. ultimo giorno</div>
+      <div class="metric-value" style="font-size:1.4rem" class="${dLast.diff>=0?'':''}">${fmtEur(dLast.diff)}</div>
+      <div class="metric-unit">${Math.round(dLast.kwh).toLocaleString('it-IT')} kWh stimati</div>
+      <div class="metric-delta ${dLast.diff>=0?'delta-down':'delta-up'}">${dLast.diff>=0?'risparmio col fisso':'maggior costo col fisso'}</div>
     </div>
     <div class="metric">
-      <div class="metric-label">Media 30 giorni</div>
-      <div class="metric-value">${fmt(avg30?.avg)}</div>
-      <div class="metric-unit">€/MWh</div>
+      <div class="metric-label">Saldo 30 giorni</div>
+      <div class="metric-value" style="font-size:1.4rem;color:${saldo30>=0?'var(--success)':'var(--danger)'}">${fmtEur(saldo30)}</div>
+      <div class="metric-unit">col fisso vs mercato</div>
     </div>
     <div class="metric">
-      <div class="metric-label">Min / Max 30gg</div>
-      <div class="metric-value" style="font-size:1.1rem">${fmt(avg30?.min)}<span style="color:var(--hint);font-size:.9rem"> / </span>${fmt(avg30?.max)}</div>
-      <div class="metric-unit">€/MWh</div>
+      <div class="metric-label">Saldo totale monitorato</div>
+      <div class="metric-value" style="font-size:1.4rem;color:${saldoTot>=0?'var(--success)':'var(--danger)'}">${fmtEur(saldoTot)}</div>
+      <div class="metric-unit">${records.length} giorni</div>
     </div>
   `;
 }
 
 function renderAndamento(){
   const last30 = records.slice(-30);
-  destroyChart('andamento');
+  destroyChart('andamento'); destroyChart('diff');
   if(!last30.length) return;
   const ctx = document.getElementById('c-andamento').getContext('2d');
   charts['andamento'] = new Chart(ctx, {
@@ -257,44 +331,59 @@ function renderAndamento(){
     },
     options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ y:{ticks:{callback:v=>v+'€'}}, x:{ticks:{autoSkip:true,maxRotation:45}} } }
   });
+  const diffs = last30.map(r=>diffGiorno(r).diff);
+  const ctx2 = document.getElementById('c-diff').getContext('2d');
+  charts['diff'] = new Chart(ctx2, {
+    type:'bar',
+    data:{
+      labels:last30.map(r=>fmtDate(r.data)),
+      datasets:[{ data:diffs.map(v=>+v.toFixed(0)), backgroundColor:diffs.map(v=>v>=0?GREEN:RED), borderRadius:3 }]
+    },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ y:{ticks:{callback:v=>'€'+v}}, x:{ticks:{autoSkip:true,maxRotation:45}} } }
+  });
 }
 
 function renderSettimanale(){
   const {from,to} = getWeekRange(0);
   const week = records.filter(r=>r.data>=from&&r.data<=to);
   const s = stats(week);
+  const strip = document.getElementById('saldo-sett');
   const mg = document.getElementById('metrics-sett');
-  if(!s){ mg.innerHTML='<p class="empty">Nessun dato questa settimana</p>'; return; }
-  const avgVsRef = s.avg - REF;
-  const avgVsRefCls = avgVsRef > 0 ? 'delta-up' : 'delta-down';
+  if(!s){ strip.innerHTML=''; strip.style.background='transparent'; mg.innerHTML='<p class="empty">Nessun dato questa settimana</p>'; return; }
+  const saldo = saldoCumulato(week);
+  const isOk = saldo>=0;
+  strip.style.background = isOk?'var(--success-bg)':'var(--danger-bg)';
+  strip.innerHTML = `
+    <span class="lbl" style="color:${isOk?'var(--success)':'var(--danger)'}">Saldo settimana corrente col fisso</span>
+    <span class="val" style="color:${isOk?'var(--success)':'var(--danger)'}">${fmtEur(saldo)}</span>
+  `;
   mg.innerHTML = `
-    <div class="metric"><div class="metric-label">Media settimana</div><div class="metric-value">${fmt(s.avg)}</div><div class="metric-unit">€/MWh</div><div class="metric-delta ${avgVsRefCls}">${avgVsRef>=0?'+':''}${avgVsRef.toFixed(2)} vs fisso</div></div>
-    <div class="metric"><div class="metric-label">Minimo</div><div class="metric-value">${fmt(s.min)}</div><div class="metric-unit">€/MWh</div></div>
-    <div class="metric"><div class="metric-label">Massimo</div><div class="metric-value">${fmt(s.max)}</div><div class="metric-unit">€/MWh</div></div>
+    <div class="metric"><div class="metric-label">Media PUN</div><div class="metric-value">${fmt(s.avg)}</div><div class="metric-unit">€/MWh</div></div>
+    <div class="metric"><div class="metric-label">Min / Max</div><div class="metric-value" style="font-size:1.1rem">${fmt(s.min)} / ${fmt(s.max)}</div><div class="metric-unit">€/MWh</div></div>
+    <div class="metric"><div class="metric-label">Giorni monitorati</div><div class="metric-value">${s.n}</div><div class="metric-unit">questa settimana</div></div>
   `;
   destroyChart('sett');
+  const diffs = week.map(r=>diffGiorno(r).diff);
   const ctx = document.getElementById('c-sett').getContext('2d');
   charts['sett'] = new Chart(ctx, {
+    type:'bar',
     data:{
       labels:week.map(r=>fmtDate(r.data)),
-      datasets:[
-        { type:'bar', data:week.map(r=>r.pun), backgroundColor: week.map(r=>r.pun>REF?'rgba(139,26,26,0.65)':'rgba(26,74,138,0.7)'), borderRadius:4 },
-        refLine(week.length)
-      ]
+      datasets:[{ data:diffs.map(v=>+v.toFixed(0)), backgroundColor:diffs.map(v=>v>=0?GREEN:RED), borderRadius:4 }]
     },
-    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{ticks:{callback:v=>v+'€'}}} }
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{ticks:{callback:v=>'€'+v}}} }
   });
   let html='';
   for(let w=-3;w<=0;w++){
     const {from:f,to:t}=getWeekRange(w);
     const wr=records.filter(r=>r.data>=f&&r.data<=t);
-    const ws=stats(wr); if(!ws) continue;
-    const vr = ws.avg - REF;
+    if(!wr.length) continue;
+    const ws=stats(wr);
+    const sw = saldoCumulato(wr);
     const label = w===0?'Settimana corrente':`${fmtDate(f)} – ${fmtDate(t)}`;
     html+=`<div class="week-row">
-      <span class="week-label">${label}</span>
-      <span>${fmt(ws.avg)} <span style="color:var(--hint);font-size:.75rem">€/MWh</span> &nbsp;
-      <span class="badge ${vr>0?'badge-up':'badge-down'}">${vr>=0?'+':''}${vr.toFixed(1)} vs 130</span></span>
+      <span class="week-label">${label} <span style="color:var(--hint)">(${wr.length}gg · media ${fmt(ws.avg)})</span></span>
+      <span class="badge ${sw>=0?'badge-down':'badge-up'}" style="font-size:.8rem">${fmtEur(sw)}</span>
     </div>`;
   }
   document.getElementById('weeks-list').innerHTML = html||'<p class="empty">Dati insufficienti</p>';
@@ -305,59 +394,75 @@ function renderMensile(){
   const mese = now.toISOString().substring(0,7);
   const mr = records.filter(r=>r.data.startsWith(mese));
   const s = stats(mr);
+  const strip = document.getElementById('saldo-mese');
   const mg = document.getElementById('metrics-mese');
-  if(!s){ mg.innerHTML='<p class="empty">Nessun dato questo mese</p>'; }else{
-    const avgVsRef = s.avg - REF;
+  if(!s){ strip.innerHTML=''; strip.style.background='transparent'; mg.innerHTML='<p class="empty">Nessun dato questo mese</p>'; }
+  else {
+    const saldo = saldoCumulato(mr);
+    const isOk = saldo>=0;
+    // proiezione fine mese: saldo medio giornaliero pesato × pesi rimanenti
+    const kwhFatti = mr.reduce((a,r)=>a+kwhGiorno(r.data),0);
+    const saldoPerKwh = kwhFatti>0 ? saldo/kwhFatti : 0;
+    const proiezione = saldoPerKwh * KWH_MESE;
+    strip.style.background = isOk?'var(--success-bg)':'var(--danger-bg)';
+    strip.innerHTML = `
+      <span class="lbl" style="color:${isOk?'var(--success)':'var(--danger)'}">Saldo mese corrente (${mr.length}gg) · proiezione fine mese: ${fmtEur(proiezione)}</span>
+      <span class="val" style="color:${isOk?'var(--success)':'var(--danger)'}">${fmtEur(saldo)}</span>
+    `;
     mg.innerHTML=`
-      <div class="metric"><div class="metric-label">Media mensile</div><div class="metric-value">${fmt(s.avg)}</div><div class="metric-unit">€/MWh</div><div class="metric-delta ${avgVsRef>0?'delta-up':'delta-down'}">${avgVsRef>=0?'+':''}${avgVsRef.toFixed(2)} vs fisso</div></div>
-      <div class="metric"><div class="metric-label">Minimo</div><div class="metric-value">${fmt(s.min)}</div><div class="metric-unit">€/MWh</div></div>
-      <div class="metric"><div class="metric-label">Massimo</div><div class="metric-value">${fmt(s.max)}</div><div class="metric-unit">€/MWh</div></div>
+      <div class="metric"><div class="metric-label">Media PUN mensile</div><div class="metric-value">${fmt(s.avg)}</div><div class="metric-unit">€/MWh</div><div class="metric-delta ${s.avg>REF?'delta-up':'delta-down'}">${s.avg>REF?'+':''}${(s.avg-REF).toFixed(1)} vs fisso</div></div>
+      <div class="metric"><div class="metric-label">Min / Max</div><div class="metric-value" style="font-size:1.1rem">${fmt(s.min)} / ${fmt(s.max)}</div><div class="metric-unit">€/MWh</div></div>
+      <div class="metric"><div class="metric-label">kWh consumati stimati</div><div class="metric-value" style="font-size:1.2rem">${Math.round(mr.reduce((a,r)=>a+kwhGiorno(r.data),0)/1000)}k</div><div class="metric-unit">su ${(KWH_MESE/1000)}k mensili</div></div>
     `;
   }
   destroyChart('mese');
   if(mr.length){
+    const diffs = mr.map(r=>diffGiorno(r).diff);
     const ctx=document.getElementById('c-mese').getContext('2d');
     charts['mese']=new Chart(ctx,{
+      type:'bar',
       data:{
         labels:mr.map(r=>fmtDate(r.data)),
-        datasets:[
-          { type:'line', label:'PUN', data:mr.map(r=>r.pun), borderColor:ACCENT, backgroundColor:ACCENT_ALPHA, tension:0.3, pointRadius:3, fill:true },
-          refLine(mr.length)
-        ]
+        datasets:[{ data:diffs.map(v=>+v.toFixed(0)), backgroundColor:diffs.map(v=>v>=0?GREEN:RED), borderRadius:3 }]
       },
-      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>v+'€'}},x:{ticks:{autoSkip:true,maxRotation:45}}}}
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'€'+v}},x:{ticks:{autoSkip:true,maxRotation:45}}}}
     });
   }
   destroyChart('mesi');
   const allMesi=[...new Set(records.map(r=>r.data.substring(0,7)))].sort().slice(-6);
-  if(allMesi.length>1){
+  if(allMesi.length>=1){
     const meseNames=['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
-    const avgs=allMesi.map(m=>{const v=records.filter(r=>r.data.startsWith(m)).map(r=>r.pun);return v.length?+(v.reduce((a,b)=>a+b,0)/v.length).toFixed(2):null;});
+    const saldi=allMesi.map(m=>{
+      const rr=records.filter(r=>r.data.startsWith(m));
+      return +saldoCumulato(rr).toFixed(0);
+    });
     const ctx2=document.getElementById('c-mesi').getContext('2d');
     charts['mesi']=new Chart(ctx2,{
+      type:'bar',
       data:{
         labels:allMesi.map(m=>{ const[y,mo]=m.split('-'); return meseNames[parseInt(mo)-1]+' '+y.slice(2);}),
-        datasets:[
-          { type:'bar', data:avgs, backgroundColor:avgs.map(v=>v>REF?'rgba(139,26,26,0.65)':'rgba(26,74,138,0.7)'), borderRadius:4 },
-          refLine(allMesi.length)
-        ]
+        datasets:[{ data:saldi, backgroundColor:saldi.map(v=>v>=0?GREEN:RED), borderRadius:4 }]
       },
-      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>v?v.toFixed(0)+'€':''}}}}
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'€'+v}}}}
     });
   }
 }
 
 function renderTabella(){
   const tbody=document.getElementById('tbody');
-  if(!records.length){tbody.innerHTML='<tr><td colspan="5" class="empty">Nessun dato</td></tr>';return;}
+  if(!records.length){tbody.innerHTML='<tr><td colspan="6" class="empty">Nessun dato</td></tr>';return;}
   let html='';
-  records.slice().reverse().forEach((r,i,arr)=>{
-    const prev=arr[i+1];
-    const d=prev?r.pun-prev.pun:null;
-    const badge=d!=null?(d>0?`<span class="badge badge-up">+${d.toFixed(2)}</span>`:d<0?`<span class="badge badge-down">${d.toFixed(2)}</span>`:'—'):'—';
-    const vr = r.pun - REF;
-    const vrBadge = `<span class="badge ${vr>0?'badge-up':'badge-down'}">${vr>=0?'+':''}${vr.toFixed(2)}</span>`;
-    html+=`<tr><td>${fmtDate(r.data)}</td><td><strong>${fmt(r.pun)}</strong></td><td>${badge}</td><td>${vrBadge}</td><td style="color:var(--muted);font-size:.78rem">${r.note||''}</td></tr>`;
+  records.slice().reverse().forEach(r=>{
+    const d = diffGiorno(r);
+    const tipo = tipoGiorno(r.data);
+    html+=`<tr>
+      <td>${fmtDate(r.data)}</td>
+      <td><span class="badge badge-day">${tipo}</span></td>
+      <td><strong>${fmt(r.pun)}</strong></td>
+      <td>${Math.round(d.kwh).toLocaleString('it-IT')}</td>
+      <td><span class="badge ${d.diff>=0?'badge-down':'badge-up'}">${fmtEur(d.diff)}</span></td>
+      <td style="color:var(--muted);font-size:.78rem">${r.note||''}</td>
+    </tr>`;
   });
   tbody.innerHTML=html;
 }
