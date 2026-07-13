@@ -406,7 +406,8 @@ function renderMetrics(){
   const last = records.at(-1);
   const dLast = diffGiorno(last);
   const saldo30 = saldoCumulato(records.slice(-30));
-  const saldoTot = saldoCumulato(records);
+  const per = periodoCompleto();
+  const totPer = per ? calcolaPeriodo(per.from, per.to) : null;
   document.getElementById('metrics').innerHTML = `
     <div class="metric">
       <div class="metric-label">Ultimo PUN</div>
@@ -425,9 +426,9 @@ function renderMetrics(){
       <div class="metric-unit">col fisso vs mercato</div>
     </div>
     <div class="metric">
-      <div class="metric-label">Saldo totale monitorato</div>
-      <div class="metric-value" style="font-size:1.4rem;color:${saldoTot>=0?'var(--success)':'var(--danger)'}">${fmtEur(saldoTot)}</div>
-      <div class="metric-unit">${records.length} giorni</div>
+      <div class="metric-label">Saldo da novembre 2025</div>
+      <div class="metric-value" style="font-size:1.4rem;color:${totPer&&totPer.saldo>=0?'var(--success)':'var(--danger)'}">${totPer?fmtEur(totPer.saldo):'—'}</div>
+      <div class="metric-unit">${totPer?Math.round(totPer.kwhTot/1000)+'k kWh · incl. medie mensili':''}</div>
     </div>
   `;
 }
