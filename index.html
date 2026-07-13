@@ -129,7 +129,7 @@ tr:last-child td{border-bottom:none}
       <div class="chart-wrap"><div style="height:220px;position:relative"><canvas id="c-mese"></canvas></div></div>
     </div>
     <div class="card">
-      <div class="card-title">Saldo mensile cumulato — ultimi 6 mesi</div>
+      <div class="card-title">Saldo mensile cumulato — da novembre 2025 &nbsp;·&nbsp; * = calcolato su media mensile</div>
       <div class="chart-wrap"><div style="height:200px;position:relative"><canvas id="c-mesi"></canvas></div></div>
     </div>
   </div>
@@ -164,6 +164,7 @@ const GREEN = 'rgba(26,107,58,0.7)';
 const RED = 'rgba(139,26,26,0.65)';
 
 let records = [];
+let monthlyAvgs = {};
 let charts = {};
 
 // ── Festività italiane ──
@@ -260,9 +261,13 @@ async function loadData(){
   try {
     const resp = await fetch(DATA_URL + '?t=' + Date.now());
     if(!resp.ok) throw new Error('HTTP '+resp.status);
-    records = await resp.json();
-    // considera solo record giornalieri (ignora medie mensili tipo 2026-01-01 con note "media mensile")
-    records = records.filter(r => !(r.note||'').includes('media mensile'));
+    const raw = await resp.json();
+    // separa medie mensili (segnaposto mesi storici) dai dati giornalieri
+    monthlyAvgs = {};
+    raw.filter(r => (r.note||'').includes('media mensile')).forEach(r => {
+      monthlyAvgs[r.data.substring(0,7)] = r.pun;
+    });
+    records = raw.filter(r => !(r.note||'').includes('media mensile'));
     records.sort((a,b)=>a.data.localeCompare(b.data));
     setStatus('ok', `${records.length} record — aggiornato ${fmtDate(records.at(-1)?.data||'')}`);
     renderAll();
@@ -429,18 +434,34 @@ function renderMensile(){
     });
   }
   destroyChart('mesi');
-  const allMesi=[...new Set(records.map(r=>r.data.substring(0,7)))].sort().slice(-6);
+  // unione mesi con dati giornalieri + mesi con sola media mensile
+  const mesiGiornalieri = new Set(records.map(r=>r.data.substring(0,7)));
+  const allMesi=[...new Set([...Object.keys(monthlyAvgs), ...mesiGiornalieri])].sort().slice(-12);
   if(allMesi.length>=1){
     const meseNames=['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
     const saldi=allMesi.map(m=>{
       const rr=records.filter(r=>r.data.startsWith(m));
-      return +saldoCumulato(rr).toFixed(0);
+      if(rr.length){
+        // dati giornalieri: saldo pesato giorno per giorno
+        return +saldoCumulato(rr).toFixed(0);
+      }
+      // fallback: media mensile × consumo totale del mese
+      const avg = monthlyAvgs[m];
+      if(avg==null) return 0;
+      const costoMercato = avg/1000*PERDITE*KWH_MESE;
+      const costoFisso = REF/1000*KWH_MESE;
+      return +(costoMercato - costoFisso).toFixed(0);
+    });
+    const labels = allMesi.map(m=>{
+      const[y,mo]=m.split('-');
+      const base = meseNames[parseInt(mo)-1]+' '+y.slice(2);
+      return mesiGiornalieri.has(m) ? base : base+' *';
     });
     const ctx2=document.getElementById('c-mesi').getContext('2d');
     charts['mesi']=new Chart(ctx2,{
       type:'bar',
       data:{
-        labels:allMesi.map(m=>{ const[y,mo]=m.split('-'); return meseNames[parseInt(mo)-1]+' '+y.slice(2);}),
+        labels:labels,
         datasets:[{ data:saldi, backgroundColor:saldi.map(v=>v>=0?GREEN:RED), borderRadius:4 }]
       },
       options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'€'+v}}}}
@@ -480,3 +501,4 @@ loadData();
 </script>
 </body>
 </html>
+
