@@ -86,6 +86,7 @@ tr:last-child td{border-bottom:none}
     <button class="tab active" onclick="switchTab('andamento')">Andamento</button>
     <button class="tab" onclick="switchTab('settimanale')">Settimana</button>
     <button class="tab" onclick="switchTab('mensile')">Mese</button>
+    <button class="tab" onclick="switchTab('totale')">Totale</button>
     <button class="tab" onclick="switchTab('tabella')">Tabella</button>
   </div>
 
@@ -131,6 +132,26 @@ tr:last-child td{border-bottom:none}
     <div class="card">
       <div class="card-title">Saldo mensile cumulato — da novembre 2025 &nbsp;·&nbsp; * = calcolato su media mensile</div>
       <div class="chart-wrap"><div style="height:200px;position:relative"><canvas id="c-mesi"></canvas></div></div>
+    </div>
+  </div>
+
+  <div id="tab-totale" class="section">
+    <div class="saldo-strip" id="saldo-totale"></div>
+    <div class="metrics" id="metrics-totale" style="margin-bottom:1.25rem"></div>
+    <div class="card">
+      <div class="card-title">Periodo personalizzato</div>
+      <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:1rem">
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <label style="font-size:.72rem;color:var(--muted)">Dal</label>
+          <input type="date" id="range-from" style="padding:7px 10px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);font-family:inherit;font-size:.85rem">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <label style="font-size:.72rem;color:var(--muted)">Al</label>
+          <input type="date" id="range-to" style="padding:7px 10px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);font-family:inherit;font-size:.85rem">
+        </div>
+        <button onclick="renderRangeCustom()" style="padding:8px 20px;border:none;border-radius:6px;background:var(--accent);color:#fff;font-family:inherit;font-size:.85rem;cursor:pointer">Calcola</button>
+      </div>
+      <div id="range-result"></div>
     </div>
   </div>
 
@@ -230,6 +251,37 @@ function diffGiorno(r){
   return { kwh, diff: costoMercato - costoFisso }; // >0 → mercato più caro → risparmio col fisso
 }
 
+// PUN per qualsiasi giorno: dato giornaliero se presente, altrimenti media mensile
+let recordsByDate = {};
+function punDelGiorno(dateStr){
+  if(recordsByDate[dateStr]!=null) return { pun: recordsByDate[dateStr], fonte:'giorno' };
+  const avg = monthlyAvgs[dateStr.substring(0,7)];
+  if(avg!=null) return { pun: avg, fonte:'media' };
+  return null;
+}
+
+// Calcola saldo/spese su un intervallo di date [from, to] iterando ogni giorno
+function calcolaPeriodo(from, to){
+  let saldo=0, spesaFisso=0, spesaMercato=0, kwhTot=0, giorniConDato=0, giorniMedia=0, giorniMancanti=0;
+  const d = new Date(from+'T12:00:00');
+  const end = new Date(to+'T12:00:00');
+  while(d<=end){
+    const ds = d.toISOString().split('T')[0];
+    const p = punDelGiorno(ds);
+    if(p){
+      const kwh = kwhGiorno(ds);
+      const cm = p.pun/1000*PERDITE*kwh;
+      const cf = REF/1000*kwh;
+      saldo += cm-cf; spesaFisso += cf; spesaMercato += cm; kwhTot += kwh;
+      if(p.fonte==='giorno') giorniConDato++; else giorniMedia++;
+    } else {
+      giorniMancanti++;
+    }
+    d.setDate(d.getDate()+1);
+  }
+  return { saldo, spesaFisso, spesaMercato, kwhTot, giorniConDato, giorniMedia, giorniMancanti };
+}
+
 function fmt(v){ return v != null ? v.toFixed(2) : '—'; }
 function fmtDate(s){ if(!s) return ''; const [y,m,d]=s.split('-'); return d+'/'+m+'/'+y; }
 function fmtEur(v){ return (v>=0?'+':'')+v.toLocaleString('it-IT',{style:'currency',currency:'EUR',minimumFractionDigits:0,maximumFractionDigits:0}); }
@@ -269,6 +321,8 @@ async function loadData(){
     });
     records = raw.filter(r => !(r.note||'').includes('media mensile'));
     records.sort((a,b)=>a.data.localeCompare(b.data));
+    recordsByDate = {};
+    records.forEach(r => { recordsByDate[r.data] = r.pun; });
     setStatus('ok', `${records.length} record — aggiornato ${fmtDate(records.at(-1)?.data||'')}`);
     renderAll();
   } catch(e) {
@@ -286,7 +340,64 @@ function renderAll(){
   renderAndamento();
   renderSettimanale();
   renderMensile();
+  renderTotale();
   renderTabella();
+}
+
+function periodoCompleto(){
+  // dal primo dato disponibile (mese con media o record giornaliero) a oggi/ultimo dato
+  const dates = [];
+  Object.keys(monthlyAvgs).forEach(ym => dates.push(ym+'-01'));
+  records.forEach(r => dates.push(r.data));
+  if(!dates.length) return null;
+  dates.sort();
+  return { from: dates[0], to: dates[dates.length-1] };
+}
+
+function renderTotale(){
+  const per = periodoCompleto();
+  const strip = document.getElementById('saldo-totale');
+  const mg = document.getElementById('metrics-totale');
+  if(!per){ strip.innerHTML=''; mg.innerHTML='<p class="empty">Nessun dato</p>'; return; }
+  const r = calcolaPeriodo(per.from, per.to);
+  const isOk = r.saldo>=0;
+  strip.style.background = isOk?'var(--success-bg)':'var(--danger-bg)';
+  strip.innerHTML = `
+    <span class="lbl" style="color:${isOk?'var(--success)':'var(--danger)'}">Saldo totale ${fmtDate(per.from)} → ${fmtDate(per.to)} &nbsp;·&nbsp; ${isOk?'risparmio col fisso':'maggior costo col fisso'}</span>
+    <span class="val" style="color:${isOk?'var(--success)':'var(--danger)'}">${fmtEur(r.saldo)}</span>
+  `;
+  mg.innerHTML = `
+    <div class="metric"><div class="metric-label">Spesa col fisso</div><div class="metric-value" style="font-size:1.3rem">${Math.round(r.spesaFisso).toLocaleString('it-IT')} €</div><div class="metric-unit">${Math.round(r.kwhTot/1000)}k kWh stimati</div></div>
+    <div class="metric"><div class="metric-label">Spesa a mercato (PUN+10%)</div><div class="metric-value" style="font-size:1.3rem">${Math.round(r.spesaMercato).toLocaleString('it-IT')} €</div><div class="metric-unit">stessa base kWh</div></div>
+    <div class="metric"><div class="metric-label">Copertura dati</div><div class="metric-value" style="font-size:1.3rem">${r.giorniConDato}</div><div class="metric-unit">giorni puntuali + ${r.giorniMedia} su media mensile${r.giorniMancanti?` · ${r.giorniMancanti} senza dato`:''}</div></div>
+  `;
+  // pre-compila il selettore col periodo completo
+  const inpF = document.getElementById('range-from');
+  const inpT = document.getElementById('range-to');
+  if(inpF && !inpF.value) inpF.value = per.from;
+  if(inpT && !inpT.value) inpT.value = per.to;
+}
+
+function renderRangeCustom(){
+  const from = document.getElementById('range-from').value;
+  const to = document.getElementById('range-to').value;
+  const out = document.getElementById('range-result');
+  if(!from || !to){ out.innerHTML='<p class="empty">Seleziona entrambe le date</p>'; return; }
+  if(from>to){ out.innerHTML='<p class="empty">La data iniziale è successiva alla finale</p>'; return; }
+  const r = calcolaPeriodo(from, to);
+  if(r.giorniConDato+r.giorniMedia===0){ out.innerHTML='<p class="empty">Nessun dato disponibile nel periodo selezionato</p>'; return; }
+  const isOk = r.saldo>=0;
+  out.innerHTML = `
+    <div class="saldo-strip" style="background:${isOk?'var(--success-bg)':'var(--danger-bg)'};margin-bottom:1rem">
+      <span class="lbl" style="color:${isOk?'var(--success)':'var(--danger)'}">${fmtDate(from)} → ${fmtDate(to)} &nbsp;·&nbsp; ${isOk?'risparmio col fisso':'maggior costo col fisso'}</span>
+      <span class="val" style="color:${isOk?'var(--success)':'var(--danger)'}">${fmtEur(r.saldo)}</span>
+    </div>
+    <div class="metrics">
+      <div class="metric"><div class="metric-label">Spesa col fisso</div><div class="metric-value" style="font-size:1.2rem">${Math.round(r.spesaFisso).toLocaleString('it-IT')} €</div><div class="metric-unit">${Math.round(r.kwhTot).toLocaleString('it-IT')} kWh stimati</div></div>
+      <div class="metric"><div class="metric-label">Spesa a mercato</div><div class="metric-value" style="font-size:1.2rem">${Math.round(r.spesaMercato).toLocaleString('it-IT')} €</div><div class="metric-unit">PUN + perdite 10%</div></div>
+      <div class="metric"><div class="metric-label">Copertura</div><div class="metric-value" style="font-size:1.2rem">${r.giorniConDato+r.giorniMedia}</div><div class="metric-unit">giorni (${r.giorniConDato} puntuali, ${r.giorniMedia} da media)${r.giorniMancanti?` · ${r.giorniMancanti} mancanti`:''}</div></div>
+    </div>
+  `;
 }
 
 function renderMetrics(){
@@ -491,7 +602,7 @@ function renderTabella(){
 
 function switchTab(name){
   document.querySelectorAll('.tab').forEach((t,i)=>{
-    const names=['andamento','settimanale','mensile','tabella'];
+    const names=['andamento','settimanale','mensile','totale','tabella'];
     t.classList.toggle('active',names[i]===name);
   });
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
