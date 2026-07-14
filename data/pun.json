@@ -1,13 +1,13 @@
 [
   {
     "data": "2025-11-01",
-    "pun": 129.60,
+    "pun": 129.6,
     "picco": "",
     "note": "media mensile novembre 2025"
   },
   {
     "data": "2025-12-01",
-    "pun": 115.00,
+    "pun": 115.0,
     "picco": "",
     "note": "media mensile dicembre 2025"
   },
@@ -923,5 +923,12 @@
     "picco": "",
     "note": "import automatico",
     "ts": "2026-07-13T08:15:28.078463Z"
+  },
+  {
+    "data": "2026-07-13",
+    "pun": 152.1,
+    "picco": "",
+    "note": "import automatico",
+    "ts": "2026-07-14T07:09:34.361993Z"
   }
 ]
