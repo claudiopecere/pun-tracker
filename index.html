@@ -172,28 +172,48 @@ const GITHUB_REPO = 'pun-tracker';
 const DATA_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/data/pun.json`;
 
 const REF = 130;              // €/MWh prezzo fisso (include perdite)
-// Consumi mensili reali (kWh) dal portale del fornitore, letti dal grafico
-// e calibrati sul totale ufficiale nov 2025 - ago 2026 di 319.770 kWh.
-// Agosto 2026 risultava ancora parziale/sbiadito nel portale: da confermare.
+// Consumi mensili reali (kWh) per contatore, dal portale del fornitore:
+// barre lette dal grafico e calibrate sul totale ufficiale del periodo.
+// Solo mesi completi: il mese in corso si stima (vedi kwhMese).
 const CONSUMI_MESE = {
-  '2025-11': 29500, '2025-12': 30600, '2026-01': 31600, '2026-02': 29000,
-  '2026-03': 31400, '2026-04': 29700, '2026-05': 32000, '2026-06': 37600,
-  '2026-07': 41700, '2026-08': 26600,
+  // contatore principale: totale nov 2025 - ago 2026 = 319.770 kWh
+  // (agosto risultava ancora parziale nel portale: da confermare)
+  A: { '2025-11': 29500, '2025-12': 30600, '2026-01': 31600, '2026-02': 29000,
+       '2026-03': 31400, '2026-04': 29700, '2026-05': 32000, '2026-06': 37600,
+       '2026-07': 41700, '2026-08': 26600 },
+  // secondo contatore: totale nov 2025 - 5 set 2026 = 76.621 kWh
+  B: { '2025-11': 6580, '2025-12': 5830, '2026-01': 6290, '2026-02': 6260,
+       '2026-03': 7230, '2026-04': 7310, '2026-05': 7900, '2026-06': 9150,
+       '2026-07': 9380, '2026-08': 9290 },
+  // terzo contatore: totale nov 2025 - 5 set 2026 = 27.081 kWh
+  C: { '2025-11': 1650, '2025-12': 1750, '2026-01': 2050, '2026-02': 1680,
+       '2026-03': 1890, '2026-04': 1860, '2026-05': 2470, '2026-06': 3750,
+       '2026-07': 4730, '2026-08': 4590 },
 };
 const PERDITE = 1.10;         // perdite di rete sul PUN di mercato
 // pesi da curva di carico di luglio 2026: sabato ~73%, domenica ~70% del feriale
 const PESO_SABATO = 0.75;     // consumo sabato vs feriale
 const PESO_FESTIVO = 0.70;    // consumo domenica/festivi vs feriale
 
-// kWh del mese: dato reale se presente, altrimenti stesso mese dell'anno
-// precedente, altrimenti media dei mesi noti
+// kWh reali di un mese, somma dei contatori; null se manca a uno qualsiasi
+function kwhMeseReale(ym){
+  let tot=0;
+  for(const c of Object.values(CONSUMI_MESE)){
+    if(c[ym]==null) return null;
+    tot+=c[ym];
+  }
+  return tot;
+}
+// kWh del mese: dato reale se presente; altrimenti stesso mese dell'anno
+// precedente; altrimenti media degli ultimi 3 mesi noti (segue la stagionalità)
 function kwhMese(ym){
-  if(CONSUMI_MESE[ym]!=null) return CONSUMI_MESE[ym];
+  const reale = kwhMeseReale(ym);
+  if(reale!=null) return reale;
   const [y,m] = ym.split('-');
-  const prec = (y-1)+'-'+m;
-  if(CONSUMI_MESE[prec]!=null) return CONSUMI_MESE[prec];
-  const v = Object.values(CONSUMI_MESE);
-  return Math.round(v.reduce((a,b)=>a+b,0)/v.length);
+  const prec = kwhMeseReale((y-1)+'-'+m);
+  if(prec!=null) return prec;
+  const noti = Object.keys(CONSUMI_MESE.A).filter(k=>kwhMeseReale(k)!=null).sort().slice(-3);
+  return Math.round(noti.reduce((a,k)=>a+kwhMeseReale(k),0)/noti.length);
 }
 // ═════════════════════════════════════════════
 
@@ -548,7 +568,7 @@ function renderMensile(){
     mg.innerHTML=`
       <div class="metric"><div class="metric-label">Media PUN mensile</div><div class="metric-value">${fmt(s.avg)}</div><div class="metric-unit">€/MWh</div><div class="metric-delta ${s.avg>REF?'delta-up':'delta-down'}">${s.avg>REF?'+':''}${(s.avg-REF).toFixed(1)} vs fisso</div></div>
       <div class="metric"><div class="metric-label">Min / Max</div><div class="metric-value" style="font-size:1.1rem">${fmt(s.min)} / ${fmt(s.max)}</div><div class="metric-unit">€/MWh</div></div>
-      <div class="metric"><div class="metric-label">kWh consumati stimati</div><div class="metric-value" style="font-size:1.2rem">${Math.round(mr.reduce((a,r)=>a+kwhGiorno(r.data),0)/1000)}k</div><div class="metric-unit">su ${(kwhMese(mese)/1000).toFixed(1)}k mensili${CONSUMI_MESE[mese]!=null?'':' (stima)'}</div></div>
+      <div class="metric"><div class="metric-label">kWh consumati stimati</div><div class="metric-value" style="font-size:1.2rem">${Math.round(mr.reduce((a,r)=>a+kwhGiorno(r.data),0)/1000)}k</div><div class="metric-unit">su ${(kwhMese(mese)/1000).toFixed(1)}k mensili${kwhMeseReale(mese)!=null?'':' (stima)'}</div></div>
     `;
   }
   destroyChart('mese');
