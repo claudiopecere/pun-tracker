@@ -1,1312 +1,2490 @@
 [
   {
     "data": "2025-11-01",
-    "pun": 129.6,
+    "pun": 105.55,
     "picco": "",
-    "note": "media mensile novembre 2025"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-02",
+    "pun": 104.29,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-03",
+    "pun": 109.93,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-04",
+    "pun": 104.89,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-05",
+    "pun": 112.9,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-06",
+    "pun": 115.42,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-07",
+    "pun": 116.29,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-08",
+    "pun": 109.91,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-09",
+    "pun": 107.57,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-10",
+    "pun": 115.34,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-11",
+    "pun": 114.06,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-12",
+    "pun": 114.47,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-13",
+    "pun": 124.41,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-14",
+    "pun": 115.36,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-15",
+    "pun": 111.4,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-16",
+    "pun": 111.3,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-17",
+    "pun": 107.16,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-18",
+    "pun": 116.64,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-19",
+    "pun": 120.37,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-20",
+    "pun": 128.43,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-21",
+    "pun": 134.1,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-22",
+    "pun": 117.06,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-23",
+    "pun": 109.26,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-24",
+    "pun": 132.81,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-25",
+    "pun": 140.15,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-26",
+    "pun": 147.32,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-27",
+    "pun": 120.54,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-28",
+    "pun": 121.34,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-29",
+    "pun": 114.26,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-11-30",
+    "pun": 110.02,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2025-12-01",
-    "pun": 115.0,
+    "pun": 132.02,
     "picco": "",
-    "note": "media mensile dicembre 2025"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-02",
+    "pun": 133.69,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-03",
+    "pun": 145.0,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-04",
+    "pun": 129.55,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-05",
+    "pun": 131.19,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-06",
+    "pun": 107.98,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-07",
+    "pun": 103.6,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-08",
+    "pun": 105.74,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-09",
+    "pun": 114.99,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-10",
+    "pun": 119.09,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-11",
+    "pun": 116.92,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-12",
+    "pun": 115.39,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-13",
+    "pun": 107.63,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-14",
+    "pun": 107.64,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-15",
+    "pun": 116.72,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-16",
+    "pun": 121.83,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-17",
+    "pun": 120.14,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-18",
+    "pun": 120.39,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-19",
+    "pun": 119.1,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-20",
+    "pun": 112.52,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-21",
+    "pun": 107.63,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-22",
+    "pun": 113.77,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-23",
+    "pun": 113.5,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-24",
+    "pun": 110.26,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-25",
+    "pun": 106.76,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-26",
+    "pun": 107.28,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-27",
+    "pun": 102.89,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-28",
+    "pun": 104.38,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-29",
+    "pun": 113.66,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-30",
+    "pun": 109.05,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2025-12-31",
+    "pun": 109.87,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-01-01",
-    "pun": 132.66,
+    "pun": 106.44,
     "picco": "",
-    "note": "media mensile gennaio 2026"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-02",
+    "pun": 105.07,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-03",
+    "pun": 104.15,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-04",
+    "pun": 106.66,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-05",
+    "pun": 122.62,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-06",
+    "pun": 115.06,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-07",
+    "pun": 120.96,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-08",
+    "pun": 128.68,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-09",
+    "pun": 127.19,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-10",
+    "pun": 114.11,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-11",
+    "pun": 107.13,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-12",
+    "pun": 132.97,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-13",
+    "pun": 135.66,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-14",
+    "pun": 141.51,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-15",
+    "pun": 144.98,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-16",
+    "pun": 140.83,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-17",
+    "pun": 125.73,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-18",
+    "pun": 131.25,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-19",
+    "pun": 148.5,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-20",
+    "pun": 148.13,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-21",
+    "pun": 152.72,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-22",
+    "pun": 159.29,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-23",
+    "pun": 158.24,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-24",
+    "pun": 138.43,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-25",
+    "pun": 128.74,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-26",
+    "pun": 149.49,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-27",
+    "pun": 150.97,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-28",
+    "pun": 149.93,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-29",
+    "pun": 146.01,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-30",
+    "pun": 139.42,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-01-31",
+    "pun": 131.75,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-02-01",
-    "pun": 114.41,
+    "pun": 117.64,
     "picco": "",
-    "note": "media mensile febbraio 2026"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-02",
+    "pun": 140.36,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-03",
+    "pun": 138.94,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-04",
+    "pun": 135.31,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-05",
+    "pun": 129.48,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-06",
+    "pun": 125.82,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-07",
+    "pun": 112.26,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-08",
+    "pun": 114.9,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-09",
+    "pun": 136.83,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-10",
+    "pun": 128.18,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-11",
+    "pun": 120.84,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-12",
+    "pun": 115.06,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-13",
+    "pun": 109.08,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-14",
+    "pun": 108.46,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-02-15",
-    "pun": 139.88,
+    "pun": 95.03,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-03-24T08:38:16.846569Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-16",
+    "pun": 113.23,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-17",
+    "pun": 102.42,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-18",
+    "pun": 112.88,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-19",
+    "pun": 112.12,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-20",
+    "pun": 108.28,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-21",
+    "pun": 98.45,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-22",
+    "pun": 86.34,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-23",
+    "pun": 104.99,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-24",
+    "pun": 109.62,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-25",
+    "pun": 107.5,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-26",
+    "pun": 104.84,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-27",
+    "pun": 107.46,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-02-28",
+    "pun": 107.03,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-01",
-    "pun": 105.3,
+    "pun": 105.25,
     "picco": "",
-    "note": "import automatico GME"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-02",
-    "pun": 120.4,
+    "pun": 120.37,
     "picco": "",
-    "note": "import automatico GME"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-03",
     "pun": 125.2,
     "picco": "",
-    "note": "import automatico GME"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-04",
-    "pun": 165.7,
+    "pun": 165.74,
     "picco": "",
-    "note": "import automatico GME"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-05",
-    "pun": 151.9,
+    "pun": 151.94,
     "picco": "",
-    "note": "import automatico GME"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-06",
-    "pun": 140.6,
+    "pun": 140.59,
     "picco": "",
-    "note": "import automatico GME"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-07",
     "pun": 142.5,
     "picco": "",
-    "note": "import automatico GME"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-08",
     "pun": 142.6,
     "picco": "",
-    "note": "import automatico GME"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-09",
-    "pun": 156.2,
+    "pun": 156.18,
     "picco": "",
-    "note": "import automatico GME"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-10",
-    "pun": 168.5,
+    "pun": 168.54,
     "picco": "",
-    "note": "import automatico GME"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-11",
-    "pun": 147.8,
+    "pun": 147.78,
     "picco": "",
-    "note": "import automatico GME"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-12",
-    "pun": 143.6,
+    "pun": 143.59,
     "picco": "",
-    "note": "import automatico GME"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-13",
-    "pun": 146.6,
+    "pun": 146.58,
     "picco": "",
-    "note": "import automatico GME"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-14",
-    "pun": 143.0,
+    "pun": 142.97,
     "picco": "",
-    "note": "import automatico GME"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-15",
-    "pun": 127.1,
+    "pun": 127.11,
     "picco": "",
-    "note": "import automatico GME"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-16",
-    "pun": 143.3,
+    "pun": 143.31,
     "picco": "",
-    "note": "import automatico GME"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-17",
-    "pun": 143.0,
+    "pun": 142.96,
     "picco": "",
-    "note": "import automatico GME"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-18",
-    "pun": 149.9,
+    "pun": 149.87,
     "picco": "",
-    "note": "import automatico GME"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-19",
-    "pun": 139.2,
+    "pun": 139.22,
     "picco": "",
-    "note": "import automatico GME"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-20",
-    "pun": 157.5,
+    "pun": 157.45,
     "picco": "",
-    "note": "import automatico GME"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-21",
-    "pun": 148.6,
+    "pun": 148.55,
     "picco": "",
-    "note": "import automatico GME"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-22",
-    "pun": 161.9,
+    "pun": 161.89,
     "picco": "",
-    "note": "import automatico GME"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-23",
-    "pun": 165.2,
+    "pun": 165.24,
     "picco": "",
-    "note": "import automatico GME"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-24",
-    "pun": 139.9,
+    "pun": 139.88,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-03-25T07:56:29.885523Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-25",
-    "pun": 138.1,
+    "pun": 138.05,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-03-26T08:04:31.729654Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-26",
-    "pun": 144.0,
+    "pun": 144.05,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-03-27T08:01:39.351533Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-27",
-    "pun": 148.3,
+    "pun": 148.35,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-03-28T07:47:57.814149Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-28",
-    "pun": 116.93,
+    "pun": 114.54,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-03-29T07:54:04.533893Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-29",
-    "pun": 116.9,
+    "pun": 116.93,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-03-30T08:22:58.508864Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-30",
-    "pun": 151.0,
+    "pun": 151.03,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-03-31T08:11:41.659642Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-03-31",
-    "pun": 156.0,
+    "pun": 156.02,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-01T08:17:54.787187Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-01",
-    "pun": 160.0,
+    "pun": 159.99,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-02T08:09:59.450465Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-02",
-    "pun": 148.5,
+    "pun": 148.51,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-03T08:04:20.307823Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-03",
-    "pun": 122.8,
+    "pun": 122.77,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-04T07:50:10.973537Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-04",
-    "pun": 113.5,
+    "pun": 113.46,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-05T07:56:44.983627Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-05",
-    "pun": 101.3,
+    "pun": 101.26,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-06T08:23:17.481273Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-06",
-    "pun": 108.8,
+    "pun": 108.85,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-07T08:16:03.298825Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-07",
-    "pun": 127.9,
+    "pun": 127.92,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-08T08:14:57.354121Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-08",
-    "pun": 128.0,
+    "pun": 127.98,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-09T08:22:00.383936Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-09",
-    "pun": 122.7,
+    "pun": 122.68,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-10T08:22:35.019810Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-10",
-    "pun": 129.6,
+    "pun": 129.67,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-11T07:53:31.786374Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-11",
-    "pun": 101.19,
+    "pun": 120.95,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-12T08:04:47.658206Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-12",
-    "pun": 101.2,
+    "pun": 101.19,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-13T09:03:32.470200Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-13",
-    "pun": 141.9,
+    "pun": 141.86,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-14T08:27:22.875422Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-04-14",
+    "pun": 150.62,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-15",
-    "pun": 140.2,
+    "pun": 140.19,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-16T06:56:16.988969Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-16",
-    "pun": 130.1,
+    "pun": 130.19,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-17T06:57:12.712746Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-17",
-    "pun": 108.2,
+    "pun": 108.21,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-18T06:12:52.916648Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-18",
-    "pun": 101.83,
+    "pun": 89.39,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-19T06:27:41.401246Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-19",
-    "pun": 110.85,
+    "pun": 101.83,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-20T07:15:14.171637Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-20",
-    "pun": 110.8,
+    "pun": 110.85,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-21T06:57:59.433027Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-21",
-    "pun": 113.6,
+    "pun": 113.59,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-22T06:57:22.499343Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-22",
-    "pun": 120.1,
+    "pun": 120.07,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-23T07:00:14.646159Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-23",
-    "pun": 95.7,
+    "pun": 95.73,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-24T07:03:55.538878Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-24",
-    "pun": 111.6,
+    "pun": 111.57,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-25T06:20:07.435495Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-25",
-    "pun": 104.3,
+    "pun": 104.31,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-26T06:58:18.116150Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-26",
-    "pun": 107.7,
+    "pun": 107.73,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-27T07:33:46.394455Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-27",
-    "pun": 122.4,
+    "pun": 122.41,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-28T07:30:42.861481Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-28",
-    "pun": 128.6,
+    "pun": 128.59,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-29T07:22:41.807967Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-29",
     "pun": 115.8,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-04-30T07:27:17.407941Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-04-30",
-    "pun": 105.8,
+    "pun": 105.79,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-01T07:24:59.891192Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-01",
-    "pun": 82.6,
+    "pun": 82.62,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-02T07:00:31.844379Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-02",
-    "pun": 103.88,
+    "pun": 100.35,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-03T07:17:43.851277Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-03",
-    "pun": 103.9,
+    "pun": 103.88,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-04T07:46:51.415873Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-04",
-    "pun": 136.3,
+    "pun": 136.33,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-05T07:16:35.640202Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-05",
-    "pun": 144.9,
+    "pun": 144.86,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-06T07:34:26.460482Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-06",
-    "pun": 146.5,
+    "pun": 146.46,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-07T07:41:38.825409Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-07",
     "pun": 136.4,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-08T06:51:11.040239Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-08",
-    "pun": 130.0,
+    "pun": 130.03,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-09T07:07:01.309497Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-09",
-    "pun": 110.5,
+    "pun": 110.52,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-10T07:24:53.086879Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-10",
-    "pun": 115.7,
+    "pun": 115.68,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-11T08:23:45.599693Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-11",
-    "pun": 114.8,
+    "pun": 114.81,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-12T07:41:41.500877Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-12",
-    "pun": 103.2,
+    "pun": 103.22,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-13T07:48:44.007024Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-13",
-    "pun": 126.6,
+    "pun": 126.61,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-14T07:40:57.411783Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-05-14",
+    "pun": 121.74,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-15",
-    "pun": 136.4,
+    "pun": 136.36,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-16T07:13:25.963177Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-16",
-    "pun": 110.0,
+    "pun": 110.02,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-17T07:32:36.223683Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-17",
-    "pun": 100.8,
+    "pun": 100.76,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-18T08:43:07.224849Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-18",
-    "pun": 139.2,
+    "pun": 139.24,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-19T08:27:08.284529Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-19",
-    "pun": 133.0,
+    "pun": 133.02,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-20T08:25:02.186383Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-20",
-    "pun": 123.0,
+    "pun": 123.03,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-21T08:31:23.477581Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-21",
-    "pun": 115.4,
+    "pun": 115.37,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-22T08:20:44.250032Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-22",
-    "pun": 111.2,
+    "pun": 111.24,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-23T07:30:36.502758Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-23",
-    "pun": 100.0,
+    "pun": 100.02,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-24T07:48:18.397338Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-24",
-    "pun": 92.3,
+    "pun": 92.28,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-25T08:55:33.306150Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-25",
-    "pun": 116.4,
+    "pun": 116.42,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-26T08:30:34.245762Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-26",
     "pun": 126.0,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-27T08:37:59.772857Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-27",
-    "pun": 134.5,
+    "pun": 134.53,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-28T08:41:32.314307Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-28",
     "pun": 131.3,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-29T08:41:24.657764Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-29",
-    "pun": 134.3,
+    "pun": 134.34,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-30T07:40:37.550536Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-30",
-    "pun": 109.55,
+    "pun": 112.91,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-05-31T08:13:42.666183Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-05-31",
-    "pun": 120.69,
+    "pun": 109.55,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-01T10:17:24.697203Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-01",
-    "pun": 120.7,
+    "pun": 120.69,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-02T09:05:14.275603Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-02",
-    "pun": 136.5,
+    "pun": 136.51,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-03T09:23:54.336638Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-03",
-    "pun": 132.4,
+    "pun": 132.37,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-04T08:46:39.490954Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-04",
-    "pun": 137.0,
+    "pun": 136.96,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-05T08:42:32.518590Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-05",
-    "pun": 136.8,
+    "pun": 136.76,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-06T07:44:47.997359Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-06",
-    "pun": 133.4,
+    "pun": 133.39,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-07T08:22:48.295340Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-07",
-    "pun": 100.0,
+    "pun": 99.96,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-08T09:21:40.021098Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-08",
-    "pun": 142.9,
+    "pun": 142.88,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-09T08:29:45.149293Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-09",
-    "pun": 145.7,
+    "pun": 145.75,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-10T08:47:53.399839Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-10",
-    "pun": 146.7,
+    "pun": 146.65,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-11T09:11:25.353414Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-11",
-    "pun": 127.2,
+    "pun": 127.23,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-12T08:56:07.478363Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-12",
-    "pun": 113.4,
+    "pun": 113.43,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-13T08:19:50.738506Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-13",
-    "pun": 95.1,
+    "pun": 95.06,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-14T08:39:31.803863Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-14",
-    "pun": 91.2,
+    "pun": 91.15,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-15T10:54:08.720429Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-15",
-    "pun": 130.0,
+    "pun": 130.02,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-16T10:05:41.837443Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-16",
-    "pun": 132.6,
+    "pun": 132.62,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-17T09:28:17.481144Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-17",
-    "pun": 134.5,
+    "pun": 134.54,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-18T09:12:12.689131Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-18",
-    "pun": 139.6,
+    "pun": 139.58,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-19T09:27:10.456673Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-19",
-    "pun": 136.6,
+    "pun": 136.59,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-20T08:20:14.334577Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-20",
-    "pun": 96.3,
+    "pun": 124.21,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-21T08:56:39.485649Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-21",
     "pun": 96.3,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-22T10:36:18.144220Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-22",
-    "pun": 141.8,
+    "pun": 141.81,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-23T08:27:59.326839Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-23",
-    "pun": 153.8,
+    "pun": 153.83,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-24T08:20:37.713913Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-24",
-    "pun": 162.7,
+    "pun": 162.66,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-25T08:21:52.096895Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-25",
-    "pun": 149.4,
+    "pun": 149.42,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-26T08:28:47.597614Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-26",
-    "pun": 155.5,
+    "pun": 155.46,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-27T07:48:22.564673Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-27",
-    "pun": 121.37,
+    "pun": 128.17,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-28T08:20:29.784592Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-28",
-    "pun": 121.4,
+    "pun": 121.37,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-29T09:25:01.127473Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-29",
-    "pun": 156.6,
+    "pun": 156.65,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-06-30T08:28:39.197649Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-06-30",
-    "pun": 148.7,
+    "pun": 153.14,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-01T08:48:32.666176Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-01",
     "pun": 148.7,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-02T08:10:29.530852Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-02",
     "pun": 142.1,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-03T08:07:57.958552Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-03",
-    "pun": 139.4,
+    "pun": 139.37,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-04T07:44:50.404111Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-04",
-    "pun": 98.71,
+    "pun": 105.3,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-05T07:55:33.842384Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-05",
-    "pun": 98.7,
+    "pun": 98.71,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-06T08:58:53.746524Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-06",
-    "pun": 144.0,
+    "pun": 144.03,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-07T08:22:22.620199Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-07",
-    "pun": 142.4,
+    "pun": 142.36,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-08T07:27:45.754404Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-07-08",
+    "pun": 146.43,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-09",
-    "pun": 153.7,
+    "pun": 153.73,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-10T08:21:18.417644Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-10",
-    "pun": 148.4,
+    "pun": 148.43,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-11T07:10:10.773961Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-11",
-    "pun": 144.1,
+    "pun": 144.11,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-12T07:27:43.846843Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-12",
-    "pun": 129.5,
+    "pun": 129.54,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-13T08:15:28.078463Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-13",
-    "pun": 152.1,
+    "pun": 152.11,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-14T07:09:34.361993Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-14",
-    "pun": 151.9,
+    "pun": 151.89,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-15T07:12:56.688598Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-15",
-    "pun": 165.9,
+    "pun": 165.91,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-16T07:21:28.007275Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-16",
-    "pun": 170.5,
+    "pun": 170.47,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-17T07:14:58.431911Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-17",
-    "pun": 168.7,
+    "pun": 168.73,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-18T06:59:00.255342Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-18",
-    "pun": 152.69,
+    "pun": 166.84,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-19T07:25:58.488419Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-19",
-    "pun": 172.56,
+    "pun": 152.69,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-20T07:57:18.995578Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-20",
-    "pun": 172.6,
+    "pun": 172.56,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-21T07:31:28.270737Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-21",
     "pun": 177.3,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-22T07:32:51.553218Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-22",
-    "pun": 170.2,
+    "pun": 170.21,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-23T07:31:40.873124Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-23",
-    "pun": 181.1,
+    "pun": 181.08,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-24T07:29:20.777345Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-24",
-    "pun": 170.2,
+    "pun": 170.23,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-25T07:14:11.419825Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-25",
-    "pun": 161.36,
+    "pun": 157.08,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-26T07:33:37.217547Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-26",
-    "pun": 161.4,
+    "pun": 161.36,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-27T08:29:05.065842Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-27",
-    "pun": 176.07,
+    "pun": 185.06,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-28T07:36:21.710660Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-28",
-    "pun": 176.1,
+    "pun": 176.07,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-29T07:41:14.380413Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-29",
-    "pun": 177.1,
+    "pun": 177.13,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-30T07:33:04.457999Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-30",
-    "pun": 182.4,
+    "pun": 182.43,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-07-31T07:48:53.171894Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-07-31",
-    "pun": 186.2,
+    "pun": 186.23,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-01T07:25:51.501766Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-01",
-    "pun": 165.39,
+    "pun": 167.85,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-02T07:30:15.682662Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-02",
-    "pun": 165.4,
+    "pun": 165.39,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-03T08:26:44.594589Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-03",
-    "pun": 197.7,
+    "pun": 197.71,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-04T07:37:49.380358Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-04",
-    "pun": 194.9,
+    "pun": 194.94,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-05T07:36:40.001927Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-05",
-    "pun": 207.8,
+    "pun": 207.84,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-06T07:37:04.959772Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-06",
-    "pun": 184.23,
+    "pun": 198.35,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-07T06:07:53.685452Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-07",
-    "pun": 184.2,
+    "pun": 184.23,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-08T05:40:43.263965Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-08",
-    "pun": 152.07,
+    "pun": 171.93,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-09T05:45:06.524190Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-09",
-    "pun": 178.89,
+    "pun": 152.07,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-10T06:08:55.460647Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-10",
-    "pun": 181.14,
+    "pun": 178.89,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-11T05:52:30.747803Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-11",
-    "pun": 181.1,
+    "pun": 181.14,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-12T06:12:25.827567Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-12",
-    "pun": 176.1,
+    "pun": 176.07,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-13T06:14:44.728449Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-13",
     "pun": 183.8,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-14T06:12:02.173287Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-14",
-    "pun": 174.5,
+    "pun": 174.55,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-15T05:22:58.590176Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-15",
-    "pun": 159.04,
+    "pun": 151.73,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-16T05:26:07.455174Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-16",
-    "pun": 179.3,
+    "pun": 159.04,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-17T05:33:06.304321Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-17",
-    "pun": 172.64,
+    "pun": 179.3,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-18T05:27:00.864156Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-18",
-    "pun": 172.6,
+    "pun": 172.64,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-19T05:27:54.104665Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-19",
-    "pun": 175.5,
+    "pun": 175.49,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-20T05:28:28.273384Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-20",
-    "pun": 180.9,
+    "pun": 180.89,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-21T05:30:00.925106Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-21",
-    "pun": 160.56,
+    "pun": 180.91,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-22T05:24:38.721600Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-22",
-    "pun": 128.42,
+    "pun": 160.56,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-23T05:26:53.163886Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-23",
-    "pun": 192.76,
+    "pun": 128.42,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-24T05:36:15.691667Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-24",
-    "pun": 190.54,
+    "pun": 192.76,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-25T05:29:35.899428Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-25",
-    "pun": 190.5,
+    "pun": 190.54,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-26T05:32:11.376587Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-26",
-    "pun": 198.1,
+    "pun": 198.08,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-27T16:05:35.200847Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-27",
-    "pun": 205.5,
+    "pun": 205.52,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-28T17:09:25.177837Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-28",
-    "pun": 205.5,
+    "pun": 205.52,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-29T11:28:22.966627Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-29",
-    "pun": 193.8,
+    "pun": 193.79,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-30T10:16:20.536790Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-30",
-    "pun": 172.7,
+    "pun": 172.73,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-08-31T11:21:08.518048Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-08-31",
-    "pun": 198.82,
+    "pun": 197.31,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-09-01T09:45:06.677385Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-09-01",
-    "pun": 198.8,
+    "pun": 198.82,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-09-02T09:18:00.516488Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-09-02",
-    "pun": 212.7,
+    "pun": 212.71,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-09-03T09:27:30.343813Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-09-03",
-    "pun": 212.5,
+    "pun": 212.46,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-09-04T09:19:47.860194Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-09-04",
-    "pun": 211.2,
+    "pun": 211.17,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-09-05T08:48:48.202587Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   },
   {
     "data": "2026-09-05",
+    "pun": 196.01,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-09-06",
     "pun": 191.75,
     "picco": "",
-    "note": "import automatico",
-    "ts": "2026-09-06T09:09:19.571356Z"
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
+  },
+  {
+    "data": "2026-09-07",
+    "pun": 218.93,
+    "picco": "",
+    "note": "ricostruzione storica",
+    "fonte": "GME",
+    "ts": "2026-09-07T09:43:52Z"
   }
 ]

@@ -1,17 +1,40 @@
 #!/usr/bin/env python3
 """
-Scarica il PUN giornaliero da Papernest (fonte: dati GME rielaborati).
-Fallback: QualEnergia.
+Scarica il PUN giornaliero (€/MWh) e aggiorna data/pun.json.
+
+Fonti, in ordine di priorità:
+  1. GME  - API del sito ufficiale (vedi gme.py): media delle 24 ore.
+            Copre qualsiasi intervallo storico ed è la fonte primaria.
+  2. Papernest   - tabella degli ultimi 7 giorni (dati GME rielaborati), €/kWh
+  3. QualEnergia - barra in homepage "PUN: NNN,NN €/MWh (G mes)": viene usata
+                   SOLO se la data indicata coincide con quella richiesta,
+                   perché espone il prezzo day-ahead (cioè di domani).
+  4. AbbassaLeBollette - tabella giornaliera, €/kWh
+
+Comportamento:
+  - senza argomenti: recupera tutti i giorni mancanti degli ultimi 7,
+    oggi compreso (il PUN di oggi è pubblicato dal GME il giorno prima),
+    così un giorno saltato viene ritentato automaticamente nei run successivi;
+  - con argomento YYYY-MM-DD: recupera solo quella data;
+  - esce con codice 1 se almeno una data richiesta resta senza dato,
+    così il workflow fallisce e GitHub manda la notifica. I dati
+    recuperati vengono comunque salvati prima di uscire.
 """
 
 import json
 import os
 import re
 import sys
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 import urllib.request
 
+from gme import ClientGME
+
 DATA_FILE = "data/pun.json"
+GIORNI_FINESTRA = 7
+
+MESI_IT = ["gen", "feb", "mar", "apr", "mag", "giu",
+           "lug", "ago", "set", "ott", "nov", "dic"]
 
 
 def fetch_html(url: str) -> str | None:
@@ -35,101 +58,118 @@ def fetch_html(url: str) -> str | None:
         return None
 
 
-def parse_pun_from_papernest(html: str, target_date: date) -> float | None:
-    """
-    Papernest pubblica una tabella con righe tipo:
-    <td>23/03/2026</td><td>0.1652</td>
-    """
+def kwh_to_mwh(val: float) -> float:
+    """Le tabelle in €/kWh riportano valori < 2: converte in €/MWh."""
+    return round(val * 1000, 2) if val < 2 else round(val, 2)
+
+
+def parse_tabella_giornaliera(html: str, target_date: date) -> float | None:
+    """Cerca una riga <td>DD/MM/YYYY</td><td>valore</td>."""
     day = target_date.strftime("%d/%m/%Y")
-    # Cerca la data nel formato DD/MM/YYYY seguita dal valore
-    pattern = re.compile(
-        re.escape(day) + r"[^<]*</td>\s*<td[^>]*>\s*([\d]+[.,][\d]+)"
-    )
-    m = pattern.search(html)
-    if m:
-        val = float(m.group(1).replace(",", "."))
-        # Papernest riporta in €/kWh → converti in €/MWh
-        if val < 2:
-            val = round(val * 1000, 2)
-        return val
-
-    # Alternativa: cerca tutte le celle con date e valori
-    rows = re.findall(
-        r"(\d{2}/\d{2}/\d{4})[^<]*</td>\s*<td[^>]*>\s*([\d]+[.,][\d]+)",
-        html
-    )
-    for d_str, v_str in rows:
-        if d_str == day:
-            val = float(v_str.replace(",", "."))
-            if val < 2:
-                val = round(val * 1000, 2)
-            return val
-
-    return None
-
-
-def fetch_from_papernest(target_date: date) -> float | None:
-    url = "https://www.papernest.it/luce-gas/mercato-energetico/pun/"
-    print(f"[INFO] Provo Papernest: {url}")
-    html = fetch_html(url)
-    if not html:
-        return None
-    val = parse_pun_from_papernest(html, target_date)
-    if val:
-        print(f"[OK] Papernest → {val} €/MWh")
-    return val
-
-
-def fetch_from_qualenergia(target_date: date) -> float | None:
-    """
-    QualEnergia pubblica il PUN nella barra in cima.
-    Estratta con regex sul testo 'PUN: NNN.NN €/MWh'.
-    Solo se la data corrisponde a oggi/ieri.
-    """
-    url = "https://www.qualenergia.it/"
-    print(f"[INFO] Provo QualEnergia: {url}")
-    html = fetch_html(url)
-    if not html:
-        return None
-    # Cerca pattern: PUN: 165.64 €/MWh (giorno)
-    m = re.search(r"PUN:\s*([\d]+[.,][\d]+)\s*€/MWh\s*\((\d+)\s*mar\b", html, re.I)
+    m = re.search(re.escape(day) + r"[^<]*</td>\s*<td[^>]*>\s*([\d]+[.,][\d]+)", html)
     if not m:
-        m = re.search(r"PUN:\s*([\d]+[.,][\d]+)\s*€/MWh", html)
-    if m:
-        val = float(m.group(1).replace(",", "."))
-        if val > 0:
-            print(f"[OK] QualEnergia → {val} €/MWh")
-            return round(val, 2)
-    return None
-
-
-def fetch_from_abbassalebollette(target_date: date) -> float | None:
-    """
-    Abbassalebollette pubblica tabella mensile con PUN giornaliero.
-    """
-    year = target_date.strftime("%Y")
-    month_it = [
-        "", "gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno",
-        "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"
-    ][target_date.month]
-    url = f"https://www.abbassalebollette.it/glossario/pun-prezzo-unico-nazionale/"
-    print(f"[INFO] Provo AbbassaLeBollette: {url}")
-    html = fetch_html(url)
-    if not html:
         return None
-    day = target_date.strftime("%d/%m/%Y")
-    pattern = re.compile(
-        re.escape(day) + r"[^<]*</td>\s*<td[^>]*>\s*([\d]+[.,][\d]+)"
-    )
-    m = pattern.search(html)
-    if m:
-        val = float(m.group(1).replace(",", "."))
-        if val < 2:
-            val = round(val * 1000, 2)
-        print(f"[OK] AbbassaLeBollette → {val} €/MWh")
-        return val
-    return None
+    return kwh_to_mwh(float(m.group(1).replace(",", ".")))
 
+
+# ---------------------------------------------------------------- fonti
+
+class GME:
+    """Fonte primaria: una sola chiamata per tutto l'intervallo richiesto."""
+    nome = "GME"
+
+    def __init__(self, da: date, a: date):
+        self._da, self._a = da, a
+        self._valori = None
+
+    def get(self, target_date: date) -> float | None:
+        if self._valori is None:
+            self._valori = {}
+            print(f"[INFO] Scarico GME: {self._da} -> {self._a}")
+            try:
+                self._valori = ClientGME().pun_giornaliero(self._da, self._a)
+            except Exception as e:
+                print(f"[WARN] GME non raggiungibile: {e}")
+        return self._valori.get(target_date.isoformat())
+
+
+class Papernest:
+    nome = "Papernest"
+    url = "https://www.papernest.it/luce-gas/mercato-energetico/pun/"
+
+    def __init__(self):
+        self._html = None
+        self._tentato = False
+
+    def get(self, target_date: date) -> float | None:
+        # la pagina è unica per tutti i giorni: la scarico una volta sola
+        if not self._tentato:
+            self._tentato = True
+            print(f"[INFO] Scarico {self.nome}: {self.url}")
+            self._html = fetch_html(self.url)
+        if not self._html:
+            return None
+        return parse_tabella_giornaliera(self._html, target_date)
+
+
+class QualEnergia:
+    nome = "QualEnergia"
+    url = "https://www.qualenergia.it/"
+
+    def __init__(self):
+        self._html = None
+        self._tentato = False
+
+    def get(self, target_date: date) -> float | None:
+        if not self._tentato:
+            self._tentato = True
+            print(f"[INFO] Scarico {self.nome}: {self.url}")
+            self._html = fetch_html(self.url)
+        if not self._html:
+            return None
+        # es. "PUN: 218,93 €/MWh (7 sett)"  - il testo può avere l'euro
+        # codificato male, quindi accetto qualsiasi carattere prima di /MWh
+        m = re.search(
+            r"PUN:\s*([\d]+[.,][\d]+)\s*\S{0,3}/MWh\s*\((\d{1,2})\s*([a-zà]+)\)",
+            self._html, re.I,
+        )
+        if not m:
+            print(f"[WARN] {self.nome}: pattern PUN con data non trovato")
+            return None
+        val = float(m.group(1).replace(",", "."))
+        giorno = int(m.group(2))
+        mese_txt = m.group(3).lower()[:3]
+        if mese_txt not in MESI_IT:
+            print(f"[WARN] {self.nome}: mese non riconosciuto '{m.group(3)}'")
+            return None
+        mese = MESI_IT.index(mese_txt) + 1
+        # il sito non indica l'anno: lo deduco dalla data richiesta
+        if (giorno, mese) != (target_date.day, target_date.month):
+            print(f"[INFO] {self.nome}: espone il {giorno:02d}/{mese:02d}, "
+                  f"non il {target_date:%d/%m} richiesto -> ignorato")
+            return None
+        return round(val, 2)
+
+
+class AbbassaLeBollette:
+    nome = "AbbassaLeBollette"
+    url = "https://www.abbassalebollette.it/glossario/pun-prezzo-unico-nazionale/"
+
+    def __init__(self):
+        self._html = None
+        self._tentato = False
+
+    def get(self, target_date: date) -> float | None:
+        if not self._tentato:
+            self._tentato = True
+            print(f"[INFO] Scarico {self.nome}: {self.url}")
+            self._html = fetch_html(self.url)
+        if not self._html:
+            return None
+        return parse_tabella_giornaliera(self._html, target_date)
+
+
+# ---------------------------------------------------------------- dati
 
 def load_data() -> list:
     os.makedirs("data", exist_ok=True)
@@ -150,55 +190,66 @@ def save_data(records: list):
     print(f"[OK] Salvati {len(records)} record in {DATA_FILE}")
 
 
-def record_exists(records: list, date_str: str) -> bool:
-    return any(r["data"] == date_str for r in records)
+def date_presenti(records: list) -> set:
+    return {r["data"] for r in records}
 
+
+# ---------------------------------------------------------------- main
 
 def main():
     records = load_data()
+    presenti = date_presenti(records)
 
-    # Data target: default ieri (GME pubblica il giorno dopo)
     if len(sys.argv) > 1:
         try:
-            target = date.fromisoformat(sys.argv[1])
+            targets = [date.fromisoformat(sys.argv[1])]
         except ValueError:
             print(f"[ERR] Data non valida: {sys.argv[1]}")
             sys.exit(1)
     else:
-        target = date.today() - timedelta(days=1)
+        oggi = date.today()
+        targets = [oggi - timedelta(days=n) for n in range(GIORNI_FINESTRA - 1, -1, -1)]
 
-    date_str = target.isoformat()
-    print(f"[INFO] Download PUN per {date_str} ...")
-
-    if record_exists(records, date_str):
-        print(f"[SKIP] Dato già presente per {date_str}")
+    da_fare = [t for t in targets if t.isoformat() not in presenti]
+    if not da_fare:
+        print(f"[SKIP] Nessuna data mancante tra {targets[0]} e {targets[-1]}")
         sys.exit(0)
+    print(f"[INFO] Date da recuperare: {', '.join(t.isoformat() for t in da_fare)}")
 
-    # Prova le fonti in ordine
-    pun = fetch_from_papernest(target)
+    fonti = [GME(da_fare[0], da_fare[-1]), Papernest(), QualEnergia(), AbbassaLeBollette()]
+    mancanti = []
+    nuovi = 0
 
-    if pun is None:
-        pun = fetch_from_qualenergia(target)
+    for target in da_fare:
+        date_str = target.isoformat()
+        pun, fonte = None, None
+        for f in fonti:
+            pun = f.get(target)
+            if pun is not None and pun > 0:
+                fonte = f.nome
+                break
+            pun = None
+        if pun is None:
+            print(f"[ERR] Nessuna fonte ha restituito il PUN per {date_str}")
+            mancanti.append(date_str)
+            continue
+        records.append({
+            "data": date_str,
+            "pun": pun,
+            "picco": "",
+            "note": "import automatico",
+            "fonte": fonte,
+            "ts": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
+        })
+        nuovi += 1
+        print(f"[OK] PUN {date_str}: {pun} €/MWh ({fonte})")
 
-    if pun is None:
-        pun = fetch_from_abbassalebollette(target)
+    if nuovi:
+        save_data(records)
 
-    if pun is None:
-        print(f"[ERR] Nessuna fonte ha restituito il PUN per {date_str}")
-        print("[INFO] Inserisci il dato manualmente su github.com/claudiopecere/pun-tracker")
-        sys.exit(0)
-
-    record = {
-        "data": date_str,
-        "pun": pun,
-        "picco": "",
-        "note": "import automatico",
-        "ts": datetime.utcnow().isoformat() + "Z",
-    }
-
-    records.append(record)
-    save_data(records)
-    print(f"[OK] PUN {date_str}: {pun} €/MWh")
+    if mancanti:
+        print("[ERR] Date rimaste senza dato: " + ", ".join(mancanti))
+        sys.exit(1)
 
 
 if __name__ == "__main__":

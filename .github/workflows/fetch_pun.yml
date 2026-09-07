@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       data:
-        description: 'Data specifica (YYYY-MM-DD, lascia vuoto per ieri)'
+        description: 'Data specifica (YYYY-MM-DD, lascia vuoto per gli ultimi 7 giorni mancanti)'
         required: false
         default: ''
 
@@ -31,6 +31,8 @@ jobs:
         run: mkdir -p data
 
       - name: Scarica PUN
+        # Se una data resta senza dato lo script esce con codice 1 e il
+        # workflow fallisce: GitHub invia la notifica via email.
         run: |
           if [ -n "${{ github.event.inputs.data }}" ]; then
             python fetch_pun.py "${{ github.event.inputs.data }}"
@@ -39,6 +41,9 @@ jobs:
           fi
 
       - name: Commit e push se ci sono modifiche
+        # Eseguito anche se il passo precedente e' fallito, per salvare
+        # comunque le date recuperate.
+        if: always()
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "PUN Bot"
