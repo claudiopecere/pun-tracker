@@ -71,7 +71,7 @@ tr:last-child td{border-bottom:none}
 <div class="header">
   <h1>Monitor PUN</h1>
   <span class="sub">Prezzo Unico Nazionale — €/MWh</span>
-  <span class="ref-badge">Fisso: 130 €/MWh · 35.000 kWh/mese</span>
+  <span class="ref-badge">Fisso: 130 €/MWh · consumi mensili reali</span>
 </div>
 
 <div class="container">
@@ -172,10 +172,29 @@ const GITHUB_REPO = 'pun-tracker';
 const DATA_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/data/pun.json`;
 
 const REF = 130;              // €/MWh prezzo fisso (include perdite)
-const KWH_MESE = 35000;       // consumo mensile totale
+// Consumi mensili reali (kWh) dal portale del fornitore, letti dal grafico
+// e calibrati sul totale ufficiale nov 2025 - ago 2026 di 319.770 kWh.
+// Agosto 2026 risultava ancora parziale/sbiadito nel portale: da confermare.
+const CONSUMI_MESE = {
+  '2025-11': 29500, '2025-12': 30600, '2026-01': 31600, '2026-02': 29000,
+  '2026-03': 31400, '2026-04': 29700, '2026-05': 32000, '2026-06': 37600,
+  '2026-07': 41700, '2026-08': 26600,
+};
 const PERDITE = 1.10;         // perdite di rete sul PUN di mercato
-const PESO_SABATO = 0.30;     // consumo sabato vs feriale
-const PESO_FESTIVO = 0.05;    // consumo domenica/festivi vs feriale
+// pesi da curva di carico di luglio 2026: sabato ~73%, domenica ~70% del feriale
+const PESO_SABATO = 0.75;     // consumo sabato vs feriale
+const PESO_FESTIVO = 0.70;    // consumo domenica/festivi vs feriale
+
+// kWh del mese: dato reale se presente, altrimenti stesso mese dell'anno
+// precedente, altrimenti media dei mesi noti
+function kwhMese(ym){
+  if(CONSUMI_MESE[ym]!=null) return CONSUMI_MESE[ym];
+  const [y,m] = ym.split('-');
+  const prec = (y-1)+'-'+m;
+  if(CONSUMI_MESE[prec]!=null) return CONSUMI_MESE[prec];
+  const v = Object.values(CONSUMI_MESE);
+  return Math.round(v.reduce((a,b)=>a+b,0)/v.length);
+}
 // ═════════════════════════════════════════════
 
 const REF_COLOR = '#b85c00';
@@ -221,7 +240,7 @@ function tipoGiorno(dateStr){
   return 'feriale';
 }
 
-// somma pesi del mese di una data → per ripartire i 35.000 kWh
+// somma pesi del mese di una data → per ripartire i kWh del mese
 const pesiMeseCache = {};
 function sommaPesiMese(ym){
   if(pesiMeseCache[ym]) return pesiMeseCache[ym];
@@ -239,7 +258,7 @@ function sommaPesiMese(ym){
 // kWh stimati per un giorno specifico
 function kwhGiorno(dateStr){
   const ym = dateStr.substring(0,7);
-  return KWH_MESE * pesoGiorno(dateStr) / sommaPesiMese(ym);
+  return kwhMese(ym) * pesoGiorno(dateStr) / sommaPesiMese(ym);
 }
 
 // Differenziale €: positivo = risparmio col fisso, negativo = maggior costo col fisso
@@ -428,7 +447,7 @@ function renderMetrics(){
     <div class="metric">
       <div class="metric-label">Saldo da novembre 2025</div>
       <div class="metric-value" style="font-size:1.4rem;color:${totPer&&totPer.saldo>=0?'var(--success)':'var(--danger)'}">${totPer?fmtEur(totPer.saldo):'—'}</div>
-      <div class="metric-unit">${totPer?Math.round(totPer.kwhTot/1000)+'k kWh · incl. medie mensili':''}</div>
+      <div class="metric-unit">${totPer?Math.round(totPer.kwhTot/1000)+'k kWh · consumi mensili reali':''}</div>
     </div>
   `;
 }
@@ -520,7 +539,7 @@ function renderMensile(){
     // proiezione fine mese: saldo medio giornaliero pesato × pesi rimanenti
     const kwhFatti = mr.reduce((a,r)=>a+kwhGiorno(r.data),0);
     const saldoPerKwh = kwhFatti>0 ? saldo/kwhFatti : 0;
-    const proiezione = saldoPerKwh * KWH_MESE;
+    const proiezione = saldoPerKwh * kwhMese(mese);
     strip.style.background = isOk?'var(--success-bg)':'var(--danger-bg)';
     strip.innerHTML = `
       <span class="lbl" style="color:${isOk?'var(--success)':'var(--danger)'}">Saldo mese corrente (${mr.length}gg) · proiezione fine mese: ${fmtEur(proiezione)}</span>
@@ -529,7 +548,7 @@ function renderMensile(){
     mg.innerHTML=`
       <div class="metric"><div class="metric-label">Media PUN mensile</div><div class="metric-value">${fmt(s.avg)}</div><div class="metric-unit">€/MWh</div><div class="metric-delta ${s.avg>REF?'delta-up':'delta-down'}">${s.avg>REF?'+':''}${(s.avg-REF).toFixed(1)} vs fisso</div></div>
       <div class="metric"><div class="metric-label">Min / Max</div><div class="metric-value" style="font-size:1.1rem">${fmt(s.min)} / ${fmt(s.max)}</div><div class="metric-unit">€/MWh</div></div>
-      <div class="metric"><div class="metric-label">kWh consumati stimati</div><div class="metric-value" style="font-size:1.2rem">${Math.round(mr.reduce((a,r)=>a+kwhGiorno(r.data),0)/1000)}k</div><div class="metric-unit">su ${(KWH_MESE/1000)}k mensili</div></div>
+      <div class="metric"><div class="metric-label">kWh consumati stimati</div><div class="metric-value" style="font-size:1.2rem">${Math.round(mr.reduce((a,r)=>a+kwhGiorno(r.data),0)/1000)}k</div><div class="metric-unit">su ${(kwhMese(mese)/1000).toFixed(1)}k mensili${CONSUMI_MESE[mese]!=null?'':' (stima)'}</div></div>
     `;
   }
   destroyChart('mese');
@@ -555,8 +574,8 @@ function renderMensile(){
       // la media mensile (dato GME definitivo) prevale se presente
       const avg = monthlyAvgs[m];
       if(avg!=null){
-        const costoMercato = avg/1000*PERDITE*KWH_MESE;
-        const costoFisso = REF/1000*KWH_MESE;
+        const costoMercato = avg/1000*PERDITE*kwhMese(m);
+        const costoFisso = REF/1000*kwhMese(m);
         return +(costoMercato - costoFisso).toFixed(0);
       }
       const rr=records.filter(r=>r.data.startsWith(m));
