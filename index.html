@@ -467,7 +467,7 @@ function renderMetrics(){
     <div class="metric">
       <div class="metric-label">Saldo da novembre 2025</div>
       <div class="metric-value" style="font-size:1.4rem;color:${totPer&&totPer.saldo>=0?'var(--success)':'var(--danger)'}">${totPer?fmtEur(totPer.saldo):'—'}</div>
-      <div class="metric-unit">${totPer?Math.round(totPer.kwhTot/1000)+'k kWh · consumi mensili reali':''}</div>
+      <div class="metric-unit">${totPer?Math.round(totPer.kwhTot/1000)+'k kWh · dal 01/11/2025':''}</div>
     </div>
   `;
 }
