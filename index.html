@@ -496,11 +496,13 @@ function renderMetrics(){
 
   // saldo per ogni periodo contrattuale (il periodo chiuso resta congelato)
   const oggi = last.data;
+  const saldiPeriodi = [];
   const cards = PERIODI.map(p=>{
     const to = p.al && p.al<oggi ? p.al : oggi;
     if(p.dal>oggi) return '';
     const r = calcolaPeriodo(p.dal, to);
     const chiuso = !!(p.al && p.al<oggi);
+    saldiPeriodi.push({ p, r, chiuso, giorni: r.giorniConDato + r.giorniMedia });
     return `
     <div class="metric">
       <div class="metric-label">${p.nome}${chiuso?' · chiuso':''}</div>
@@ -509,6 +511,33 @@ function renderMetrics(){
       <div class="metric-delta ${r.saldo>=0?'delta-down':'delta-up'}">${etichettaSaldo(r.saldo)}</div>
     </div>`;
   }).join('');
+
+  // saldo netto: risparmio accumulato nei periodi chiusi ± andamento del periodo in corso
+  let cardNetto = '';
+  if(saldiPeriodi.length>1){
+    const chiusi = saldiPeriodi.filter(x=>x.chiuso).reduce((a,x)=>a+x.r.saldo,0);
+    const corrente = saldiPeriodi.find(x=>!x.chiuso);
+    const netto = chiusi + (corrente ? corrente.r.saldo : 0);
+    let riga = '';
+    if(corrente && chiusi>0){
+      const eroso = -corrente.r.saldo;
+      if(eroso>0){
+        const perc = eroso/chiusi*100;
+        const alGiorno = eroso/Math.max(corrente.giorni,1);
+        const giorniResidui = Math.round(netto/alGiorno);
+        riga = `eroso ${perc.toFixed(1)}% in ${corrente.giorni}gg · ${Math.round(alGiorno)} €/giorno · a questo ritmo si azzera in ${giorniResidui} giorni`;
+      } else {
+        riga = `il contratto attuale sta aggiungendo risparmio (+${Math.round(corrente.r.saldo).toLocaleString('it-IT')} €)`;
+      }
+    }
+    cardNetto = `
+    <div class="metric" style="border-color:var(--ref)">
+      <div class="metric-label">Saldo netto vecchio + nuovo contratto</div>
+      <div class="metric-value" style="font-size:1.4rem;color:${netto>=0?'var(--success)':'var(--danger)'}">${fmtEur(netto)}</div>
+      <div class="metric-unit">risparmio periodi chiusi ${fmtEur(chiusi)}${corrente?` · periodo in corso ${fmtEur(corrente.r.saldo)}`:''}</div>
+      <div class="metric-delta" style="color:${netto>=0?'var(--muted)':'var(--danger)'}">${riga}</div>
+    </div>`;
+  }
 
   document.getElementById('metrics').innerHTML = `
     <div class="metric">
@@ -529,6 +558,7 @@ function renderMetrics(){
       <div class="metric-delta" style="color:var(--muted)">${proiezioneSpesa!=null?`proiezione fine mese ${Math.round(proiezioneSpesa).toLocaleString('it-IT')} €`:''}</div>
     </div>
     ${cards}
+    ${cardNetto}
   `;
 }
 
