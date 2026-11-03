@@ -80,6 +80,22 @@ python gme.py 2026-01-01 2026-01-31   # stampa il PUN GME di un intervallo, senz
 Dopo il setup, la dashboard è disponibile su:
 `https://TUO_USERNAME.github.io/pun-tracker/`
 
+## Periodi contrattuali
+
+La dashboard confronta sempre **il contratto in essere con l'alternativa
+scartata**, giorno per giorno, secondo il periodo in cui cade la data
+(tabella `PERIODI` in cima allo script di `index.html`):
+
+| Periodo | Contratto in essere | Alternativa scartata | Soglia PUN |
+|---|---|---|---|
+| 01/11/2025 – 31/10/2026 | fisso 130 €/MWh | mercato: PUN + perdite 10% | 118,2 |
+| dal 01/11/2026 | PUN + 9 €/MWh, perdite incluse | fisso 170 €/MWh rifiutato al rinnovo | 161,0 |
+
+Saldo positivo = la scelta fatta ha risparmiato. La soglia è il PUN a cui le
+due opzioni costano uguale. Un periodo chiuso resta congelato: cambiare
+contratto non altera lo storico. Per un nuovo contratto basta aggiungere una
+riga alla tabella `PERIODI`.
+
 ## Fonte dati
 
 Fonte primaria: **GME – Gestore dei Mercati Energetici**, tramite l'API

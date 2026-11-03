@@ -71,7 +71,7 @@ tr:last-child td{border-bottom:none}
 <div class="header">
   <h1>Monitor PUN</h1>
   <span class="sub">Prezzo Unico Nazionale — €/MWh</span>
-  <span class="ref-badge">Fisso: 130 €/MWh · consumi mensili reali</span>
+  <span class="ref-badge" id="ref-badge">…</span>
 </div>
 
 <div class="container">
@@ -92,18 +92,18 @@ tr:last-child td{border-bottom:none}
 
   <div id="tab-andamento" class="section active">
     <div class="card">
-      <div class="card-title">Ultimi 30 giorni — PUN vs riferimento</div>
+      <div class="card-title">Ultimi 30 giorni — PUN vs soglia di indifferenza</div>
       <div class="legend">
         <span class="leg"><span class="leg-sq" style="background:#1a4a8a"></span>PUN giornaliero</span>
-        <span class="leg"><span class="leg-line"></span>Fisso 130 €/MWh</span>
+        <span class="leg"><span class="leg-line"></span>Soglia di indifferenza (PUN a cui contratto e alternativa costano uguale)</span>
       </div>
       <div class="chart-wrap"><div style="height:230px;position:relative"><canvas id="c-andamento"></canvas></div></div>
     </div>
     <div class="card">
-      <div class="card-title">Risparmio / maggior costo giornaliero col fisso (€)</div>
+      <div class="card-title">Risparmio / maggior costo giornaliero del contratto in essere (€)</div>
       <div class="legend">
-        <span class="leg"><span class="leg-sq" style="background:rgba(26,107,58,0.7)"></span>Risparmio col fisso</span>
-        <span class="leg"><span class="leg-sq" style="background:rgba(139,26,26,0.65)"></span>Maggior costo col fisso</span>
+        <span class="leg"><span class="leg-sq" style="background:rgba(26,107,58,0.7)"></span>Contratto in essere più conveniente</span>
+        <span class="leg"><span class="leg-sq" style="background:rgba(139,26,26,0.65)"></span>Alternativa scartata più conveniente</span>
       </div>
       <div class="chart-wrap"><div style="height:200px;position:relative"><canvas id="c-diff"></canvas></div></div>
     </div>
@@ -130,7 +130,7 @@ tr:last-child td{border-bottom:none}
       <div class="chart-wrap"><div style="height:220px;position:relative"><canvas id="c-mese"></canvas></div></div>
     </div>
     <div class="card">
-      <div class="card-title">Saldo mensile cumulato — da novembre 2025 &nbsp;·&nbsp; * = calcolato su media mensile</div>
+      <div class="card-title">Saldo mensile — positivo = contratto in essere più conveniente dell'alternativa</div>
       <div class="chart-wrap"><div style="height:200px;position:relative"><canvas id="c-mesi"></canvas></div></div>
     </div>
   </div>
@@ -139,6 +139,8 @@ tr:last-child td{border-bottom:none}
     <div class="saldo-strip" id="saldo-totale"></div>
     <div class="metrics" id="metrics-totale" style="margin-bottom:1.25rem"></div>
     <div class="card">
+      <div class="card-title">Periodi contrattuali</div>
+      <div id="periodi-list" style="margin-bottom:1.25rem"></div>
       <div class="card-title">Periodo personalizzato</div>
       <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:1rem">
         <div style="display:flex;flex-direction:column;gap:4px">
@@ -158,7 +160,7 @@ tr:last-child td{border-bottom:none}
   <div id="tab-tabella" class="section">
     <div class="card">
       <table>
-        <thead><tr><th>Data</th><th>Giorno</th><th>PUN</th><th>kWh stimati</th><th>Diff. € col fisso</th><th>Note</th></tr></thead>
+        <thead><tr><th>Data</th><th>Giorno</th><th>PUN</th><th>kWh stimati</th><th>€/MWh pagato</th><th>Diff. € vs alternativa</th><th>Note</th></tr></thead>
         <tbody id="tbody"></tbody>
       </table>
     </div>
@@ -171,7 +173,32 @@ const GITHUB_USER = 'claudiopecere';
 const GITHUB_REPO = 'pun-tracker';
 const DATA_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/data/pun.json`;
 
-const REF = 130;              // €/MWh prezzo fisso (include perdite)
+// ── Periodi contrattuali ──
+// Ogni giorno è valutato con le regole del periodo in cui cade.
+// Il saldo è sempre: costo dell'alternativa scartata − costo del contratto in
+// essere. Positivo = la scelta fatta ha risparmiato. Così lo storico del
+// periodo a prezzo fisso resta identico e il nuovo periodo è confrontabile.
+// Prezzi in €/MWh. "perdite" è il moltiplicatore applicato al PUN+spread
+// (1.10 = perdite di rete 10%; 1.00 = già incluse nel prezzo).
+const PERIODI = [
+  { dal:'2025-11-01', al:'2026-10-31', tipo:'fisso',
+    nome:'Fisso 130', fisso:130, spread:0, perdite:1.10,
+    contratto:'fisso 130 €/MWh', alternativa:'mercato (PUN + perdite 10%)' },
+  { dal:'2026-11-01', al:null, tipo:'indicizzato',
+    nome:'Indicizzato PUN + 9', fisso:170, spread:9, perdite:1.00,
+    contratto:'PUN + 9 €/MWh, perdite incluse', alternativa:'fisso 170 €/MWh rifiutato al rinnovo' },
+];
+function periodoDi(dateStr){
+  for(const p of PERIODI){ if(dateStr>=p.dal && (!p.al || dateStr<=p.al)) return p; }
+  return PERIODI.at(-1);
+}
+function periodoCorrente(){ return periodoDi(new Date().toISOString().substring(0,10)); }
+// €/MWh del contratto in essere e dell'alternativa per un dato PUN
+function prezzoIndicizzato(p, pun){ return (pun + p.spread) * p.perdite; }
+function prezzoContratto(p, pun){ return p.tipo==='fisso' ? p.fisso : prezzoIndicizzato(p, pun); }
+function prezzoAlternativa(p, pun){ return p.tipo==='fisso' ? prezzoIndicizzato(p, pun) : p.fisso; }
+// PUN a cui contratto e alternativa costano uguale
+function sogliaPun(p){ return p.fisso / p.perdite - p.spread; }
 // Consumi mensili reali (kWh) per contatore, dal portale del fornitore:
 // barre lette dal grafico e calibrate sul totale ufficiale del periodo.
 // Solo mesi completi: il mese in corso si stima (vedi kwhMese).
@@ -190,7 +217,6 @@ const CONSUMI_MESE = {
        '2026-03': 1890, '2026-04': 1860, '2026-05': 2470, '2026-06': 3750,
        '2026-07': 4730, '2026-08': 4590 },
 };
-const PERDITE = 1.10;         // perdite di rete sul PUN di mercato
 // pesi da curva di carico di luglio 2026: sabato ~73%, domenica ~70% del feriale
 const PESO_SABATO = 0.75;     // consumo sabato vs feriale
 const PESO_FESTIVO = 0.70;    // consumo domenica/festivi vs feriale
@@ -281,13 +307,14 @@ function kwhGiorno(dateStr){
   return kwhMese(ym) * pesoGiorno(dateStr) / sommaPesiMese(ym);
 }
 
-// Differenziale €: positivo = risparmio col fisso, negativo = maggior costo col fisso
-// costo mercato = PUN/1000 * 1.10 * kWh ; costo fisso = REF/1000 * kWh
+// Differenziale €: positivo = il contratto in essere ha risparmiato rispetto
+// all'alternativa scartata, negativo = l'alternativa sarebbe costata meno
 function diffGiorno(r){
+  const p = periodoDi(r.data);
   const kwh = kwhGiorno(r.data);
-  const costoMercato = r.pun / 1000 * PERDITE * kwh;
-  const costoFisso = REF / 1000 * kwh;
-  return { kwh, diff: costoMercato - costoFisso }; // >0 → mercato più caro → risparmio col fisso
+  const costoContratto = prezzoContratto(p, r.pun) / 1000 * kwh;
+  const costoAlternativa = prezzoAlternativa(p, r.pun) / 1000 * kwh;
+  return { kwh, costoContratto, costoAlternativa, diff: costoAlternativa - costoContratto, periodo:p };
 }
 
 // PUN per qualsiasi giorno: dato giornaliero se presente, altrimenti media mensile
@@ -301,25 +328,26 @@ function punDelGiorno(dateStr){
 
 // Calcola saldo/spese su un intervallo di date [from, to] iterando ogni giorno
 function calcolaPeriodo(from, to){
-  let saldo=0, spesaFisso=0, spesaMercato=0, kwhTot=0, giorniConDato=0, giorniMedia=0, giorniMancanti=0;
+  let saldo=0, spesaContratto=0, spesaAlternativa=0, kwhTot=0, giorniConDato=0, giorniMedia=0, giorniMancanti=0;
   const d = new Date(from+'T12:00:00');
   const end = new Date(to+'T12:00:00');
   while(d<=end){
     const ds = d.toISOString().split('T')[0];
     const p = punDelGiorno(ds);
     if(p){
-      const kwh = kwhGiorno(ds);
-      const cm = p.pun/1000*PERDITE*kwh;
-      const cf = REF/1000*kwh;
-      saldo += cm-cf; spesaFisso += cf; spesaMercato += cm; kwhTot += kwh;
+      const g = diffGiorno({ data: ds, pun: p.pun });
+      saldo += g.diff; spesaContratto += g.costoContratto; spesaAlternativa += g.costoAlternativa; kwhTot += g.kwh;
       if(p.fonte==='giorno') giorniConDato++; else giorniMedia++;
     } else {
       giorniMancanti++;
     }
     d.setDate(d.getDate()+1);
   }
-  return { saldo, spesaFisso, spesaMercato, kwhTot, giorniConDato, giorniMedia, giorniMancanti };
+  // prezzo medio effettivamente pagato, pesato sui kWh
+  const prezzoMedio = kwhTot>0 ? spesaContratto/kwhTot*1000 : null;
+  return { saldo, spesaContratto, spesaAlternativa, prezzoMedio, kwhTot, giorniConDato, giorniMedia, giorniMancanti };
 }
+function etichettaSaldo(v){ return v>=0 ? 'contratto in essere più conveniente' : 'alternativa scartata più conveniente'; }
 
 function fmt(v){ return v != null ? v.toFixed(2) : '—'; }
 function fmtDate(s){ if(!s) return ''; const [y,m,d]=s.split('-'); return d+'/'+m+'/'+y; }
@@ -343,8 +371,8 @@ function getWeekRange(offset=0){
   return { from:f(mon), to:f(sun) };
 }
 
-function refLine(count){
-  return { label:'Fisso 130', data:Array(count).fill(REF), borderColor:REF_COLOR, borderDash:[6,3], borderWidth:1.5, pointRadius:0, type:'line', fill:false, tension:0 };
+function refLine(dates){
+  return { label:'Soglia', data:dates.map(ds=>+sogliaPun(periodoDi(ds)).toFixed(1)), borderColor:REF_COLOR, borderDash:[6,3], borderWidth:1.5, pointRadius:0, type:'line', fill:false, tension:0, stepped:true };
 }
 function destroyChart(id){ if(charts[id]){ charts[id].destroy(); delete charts[id]; } }
 
@@ -402,14 +430,26 @@ function renderTotale(){
   const isOk = r.saldo>=0;
   strip.style.background = isOk?'var(--success-bg)':'var(--danger-bg)';
   strip.innerHTML = `
-    <span class="lbl" style="color:${isOk?'var(--success)':'var(--danger)'}">Saldo totale ${fmtDate(per.from)} → ${fmtDate(per.to)} &nbsp;·&nbsp; ${isOk?'risparmio col fisso':'maggior costo col fisso'}</span>
+    <span class="lbl" style="color:${isOk?'var(--success)':'var(--danger)'}">Saldo totale ${fmtDate(per.from)} → ${fmtDate(per.to)} &nbsp;·&nbsp; ${etichettaSaldo(r.saldo)}</span>
     <span class="val" style="color:${isOk?'var(--success)':'var(--danger)'}">${fmtEur(r.saldo)}</span>
   `;
   mg.innerHTML = `
-    <div class="metric"><div class="metric-label">Spesa col fisso</div><div class="metric-value" style="font-size:1.3rem">${Math.round(r.spesaFisso).toLocaleString('it-IT')} €</div><div class="metric-unit">${Math.round(r.kwhTot/1000)}k kWh stimati</div></div>
-    <div class="metric"><div class="metric-label">Spesa a mercato (PUN+10%)</div><div class="metric-value" style="font-size:1.3rem">${Math.round(r.spesaMercato).toLocaleString('it-IT')} €</div><div class="metric-unit">stessa base kWh</div></div>
+    <div class="metric"><div class="metric-label">Spesa col contratto in essere</div><div class="metric-value" style="font-size:1.3rem">${Math.round(r.spesaContratto).toLocaleString('it-IT')} €</div><div class="metric-unit">${Math.round(r.kwhTot/1000)}k kWh stimati · ${fmt(r.prezzoMedio)} €/MWh medi</div></div>
+    <div class="metric"><div class="metric-label">Spesa con l'alternativa scartata</div><div class="metric-value" style="font-size:1.3rem">${Math.round(r.spesaAlternativa).toLocaleString('it-IT')} €</div><div class="metric-unit">stessa base kWh</div></div>
     <div class="metric"><div class="metric-label">Copertura dati</div><div class="metric-value" style="font-size:1.3rem">${r.giorniConDato}</div><div class="metric-unit">giorni puntuali + ${r.giorniMedia} su media mensile${r.giorniMancanti?` · ${r.giorniMancanti} senza dato`:''}</div></div>
   `;
+  // riepilogo per periodo contrattuale
+  const pl = document.getElementById('periodi-list');
+  pl.innerHTML = PERIODI.filter(p=>p.dal<=per.to).map(p=>{
+    const to = p.al && p.al<per.to ? p.al : per.to;
+    const rp = calcolaPeriodo(p.dal, to);
+    return `<div class="week-row">
+      <span class="week-label"><strong>${p.nome}</strong> <span style="color:var(--hint)">${fmtDate(p.dal)} → ${fmtDate(to)}${p.al&&p.al<per.to?' · chiuso':' · in corso'}</span><br>
+        <span style="color:var(--muted);font-size:.78rem">contratto: ${p.contratto} · alternativa: ${p.alternativa} · soglia PUN ${fmt(sogliaPun(p))} €/MWh</span><br>
+        <span style="color:var(--muted);font-size:.78rem">spesa ${Math.round(rp.spesaContratto).toLocaleString('it-IT')} € su ${Math.round(rp.kwhTot/1000)}k kWh · ${fmt(rp.prezzoMedio)} €/MWh medi</span></span>
+      <span class="badge ${rp.saldo>=0?'badge-down':'badge-up'}" style="font-size:.85rem">${fmtEur(rp.saldo)}</span>
+    </div>`;
+  }).join('');
   // pre-compila il selettore col periodo completo
   const inpF = document.getElementById('range-from');
   const inpT = document.getElementById('range-to');
@@ -428,12 +468,12 @@ function renderRangeCustom(){
   const isOk = r.saldo>=0;
   out.innerHTML = `
     <div class="saldo-strip" style="background:${isOk?'var(--success-bg)':'var(--danger-bg)'};margin-bottom:1rem">
-      <span class="lbl" style="color:${isOk?'var(--success)':'var(--danger)'}">${fmtDate(from)} → ${fmtDate(to)} &nbsp;·&nbsp; ${isOk?'risparmio col fisso':'maggior costo col fisso'}</span>
+      <span class="lbl" style="color:${isOk?'var(--success)':'var(--danger)'}">${fmtDate(from)} → ${fmtDate(to)} &nbsp;·&nbsp; ${etichettaSaldo(r.saldo)}</span>
       <span class="val" style="color:${isOk?'var(--success)':'var(--danger)'}">${fmtEur(r.saldo)}</span>
     </div>
     <div class="metrics">
-      <div class="metric"><div class="metric-label">Spesa col fisso</div><div class="metric-value" style="font-size:1.2rem">${Math.round(r.spesaFisso).toLocaleString('it-IT')} €</div><div class="metric-unit">${Math.round(r.kwhTot).toLocaleString('it-IT')} kWh stimati</div></div>
-      <div class="metric"><div class="metric-label">Spesa a mercato</div><div class="metric-value" style="font-size:1.2rem">${Math.round(r.spesaMercato).toLocaleString('it-IT')} €</div><div class="metric-unit">PUN + perdite 10%</div></div>
+      <div class="metric"><div class="metric-label">Spesa col contratto in essere</div><div class="metric-value" style="font-size:1.2rem">${Math.round(r.spesaContratto).toLocaleString('it-IT')} €</div><div class="metric-unit">${Math.round(r.kwhTot).toLocaleString('it-IT')} kWh stimati · ${fmt(r.prezzoMedio)} €/MWh medi</div></div>
+      <div class="metric"><div class="metric-label">Spesa con l'alternativa</div><div class="metric-value" style="font-size:1.2rem">${Math.round(r.spesaAlternativa).toLocaleString('it-IT')} €</div><div class="metric-unit">stessa base kWh</div></div>
       <div class="metric"><div class="metric-label">Copertura</div><div class="metric-value" style="font-size:1.2rem">${r.giorniConDato+r.giorniMedia}</div><div class="metric-unit">giorni (${r.giorniConDato} puntuali, ${r.giorniMedia} da media)${r.giorniMancanti?` · ${r.giorniMancanti} mancanti`:''}</div></div>
     </div>
   `;
@@ -444,31 +484,51 @@ function renderMetrics(){
   if(!s){ document.getElementById('metrics').innerHTML='<p class="empty">Nessun dato</p>'; return; }
   const last = records.at(-1);
   const dLast = diffGiorno(last);
-  const saldo30 = saldoCumulato(records.slice(-30));
-  const per = periodoCompleto();
-  const totPer = per ? calcolaPeriodo(per.from, per.to) : null;
+  const pc = periodoCorrente();
+  document.getElementById('ref-badge').textContent =
+    `Dal ${fmtDate(pc.dal)}: ${pc.contratto} · alternativa: ${pc.alternativa}`;
+
+  // mese corrente: spesa effettiva e proiezione
+  const mese = new Date().toISOString().substring(0,7);
+  const mr = records.filter(r=>r.data.startsWith(mese));
+  const rm = mr.length ? calcolaPeriodo(mr[0].data, mr.at(-1).data) : null;
+  const proiezioneSpesa = rm && rm.kwhTot>0 ? rm.spesaContratto/rm.kwhTot*kwhMese(mese) : null;
+
+  // saldo per ogni periodo contrattuale (il periodo chiuso resta congelato)
+  const oggi = last.data;
+  const cards = PERIODI.map(p=>{
+    const to = p.al && p.al<oggi ? p.al : oggi;
+    if(p.dal>oggi) return '';
+    const r = calcolaPeriodo(p.dal, to);
+    const chiuso = !!(p.al && p.al<oggi);
+    return `
+    <div class="metric">
+      <div class="metric-label">${p.nome}${chiuso?' · chiuso':''}</div>
+      <div class="metric-value" style="font-size:1.4rem;color:${r.saldo>=0?'var(--success)':'var(--danger)'}">${fmtEur(r.saldo)}</div>
+      <div class="metric-unit">${fmtDate(p.dal)} → ${fmtDate(to)} · ${Math.round(r.kwhTot/1000)}k kWh</div>
+      <div class="metric-delta ${r.saldo>=0?'delta-down':'delta-up'}">${etichettaSaldo(r.saldo)}</div>
+    </div>`;
+  }).join('');
+
   document.getElementById('metrics').innerHTML = `
     <div class="metric">
       <div class="metric-label">Ultimo PUN</div>
       <div class="metric-value">${fmt(last.pun)}</div>
-      <div class="metric-unit">${fmtDate(last.data)} · ${tipoGiorno(last.data)}</div>
+      <div class="metric-unit">${fmtDate(last.data)} · ${tipoGiorno(last.data)} · pagato ${fmt(prezzoContratto(dLast.periodo,last.pun))} €/MWh</div>
     </div>
     <div class="metric">
       <div class="metric-label">Diff. ultimo giorno</div>
-      <div class="metric-value" style="font-size:1.4rem" class="${dLast.diff>=0?'':''}">${fmtEur(dLast.diff)}</div>
+      <div class="metric-value" style="font-size:1.4rem">${fmtEur(dLast.diff)}</div>
       <div class="metric-unit">${Math.round(dLast.kwh).toLocaleString('it-IT')} kWh stimati</div>
-      <div class="metric-delta ${dLast.diff>=0?'delta-down':'delta-up'}">${dLast.diff>=0?'risparmio col fisso':'maggior costo col fisso'}</div>
+      <div class="metric-delta ${dLast.diff>=0?'delta-down':'delta-up'}">${etichettaSaldo(dLast.diff)}</div>
     </div>
     <div class="metric">
-      <div class="metric-label">Saldo 30 giorni</div>
-      <div class="metric-value" style="font-size:1.4rem;color:${saldo30>=0?'var(--success)':'var(--danger)'}">${fmtEur(saldo30)}</div>
-      <div class="metric-unit">col fisso vs mercato</div>
+      <div class="metric-label">Spesa mese corrente</div>
+      <div class="metric-value" style="font-size:1.4rem">${rm?Math.round(rm.spesaContratto).toLocaleString('it-IT')+' €':'—'}</div>
+      <div class="metric-unit">${rm?`${mr.length}gg · prezzo medio ${fmt(rm.prezzoMedio)} €/MWh`:''}</div>
+      <div class="metric-delta" style="color:var(--muted)">${proiezioneSpesa!=null?`proiezione fine mese ${Math.round(proiezioneSpesa).toLocaleString('it-IT')} €`:''}</div>
     </div>
-    <div class="metric">
-      <div class="metric-label">Saldo da novembre 2025</div>
-      <div class="metric-value" style="font-size:1.4rem;color:${totPer&&totPer.saldo>=0?'var(--success)':'var(--danger)'}">${totPer?fmtEur(totPer.saldo):'—'}</div>
-      <div class="metric-unit">${totPer?Math.round(totPer.kwhTot/1000)+'k kWh · dal 01/11/2025':''}</div>
-    </div>
+    ${cards}
   `;
 }
 
@@ -482,7 +542,7 @@ function renderAndamento(){
       labels: last30.map(r=>fmtDate(r.data)),
       datasets:[
         { type:'line', label:'PUN', data:last30.map(r=>r.pun), borderColor:ACCENT, backgroundColor:ACCENT_ALPHA, tension:0.35, pointRadius:2, fill:true },
-        refLine(last30.length)
+        refLine(last30.map(r=>r.data))
       ]
     },
     options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ y:{ticks:{callback:v=>v+'€'}}, x:{ticks:{autoSkip:true,maxRotation:45}} } }
@@ -510,7 +570,7 @@ function renderSettimanale(){
   const isOk = saldo>=0;
   strip.style.background = isOk?'var(--success-bg)':'var(--danger-bg)';
   strip.innerHTML = `
-    <span class="lbl" style="color:${isOk?'var(--success)':'var(--danger)'}">Saldo settimana corrente col fisso</span>
+    <span class="lbl" style="color:${isOk?'var(--success)':'var(--danger)'}">Saldo settimana corrente · ${etichettaSaldo(saldo)}</span>
     <span class="val" style="color:${isOk?'var(--success)':'var(--danger)'}">${fmtEur(saldo)}</span>
   `;
   mg.innerHTML = `
@@ -556,6 +616,7 @@ function renderMensile(){
   else {
     const saldo = saldoCumulato(mr);
     const isOk = saldo>=0;
+    const rmese = calcolaPeriodo(mr[0].data, mr.at(-1).data);
     // proiezione fine mese: saldo medio giornaliero pesato × pesi rimanenti
     const kwhFatti = mr.reduce((a,r)=>a+kwhGiorno(r.data),0);
     const saldoPerKwh = kwhFatti>0 ? saldo/kwhFatti : 0;
@@ -566,7 +627,8 @@ function renderMensile(){
       <span class="val" style="color:${isOk?'var(--success)':'var(--danger)'}">${fmtEur(saldo)}</span>
     `;
     mg.innerHTML=`
-      <div class="metric"><div class="metric-label">Media PUN mensile</div><div class="metric-value">${fmt(s.avg)}</div><div class="metric-unit">€/MWh</div><div class="metric-delta ${s.avg>REF?'delta-up':'delta-down'}">${s.avg>REF?'+':''}${(s.avg-REF).toFixed(1)} vs fisso</div></div>
+      <div class="metric"><div class="metric-label">Media PUN mensile</div><div class="metric-value">${fmt(s.avg)}</div><div class="metric-unit">€/MWh · soglia ${fmt(sogliaPun(periodoDi(mr[0].data)))}</div><div class="metric-delta ${saldo>=0?'delta-down':'delta-up'}">${(s.avg-sogliaPun(periodoDi(mr[0].data))).toFixed(1)>0?'+':''}${(s.avg-sogliaPun(periodoDi(mr[0].data))).toFixed(1)} vs soglia</div></div>
+      <div class="metric"><div class="metric-label">Spesa effettiva</div><div class="metric-value" style="font-size:1.2rem">${Math.round(rmese.spesaContratto).toLocaleString('it-IT')} €</div><div class="metric-unit">${fmt(rmese.prezzoMedio)} €/MWh medi · proiezione ${Math.round(rmese.spesaContratto/rmese.kwhTot*kwhMese(mese)).toLocaleString('it-IT')} €</div></div>
       <div class="metric"><div class="metric-label">Min / Max</div><div class="metric-value" style="font-size:1.1rem">${fmt(s.min)} / ${fmt(s.max)}</div><div class="metric-unit">€/MWh</div></div>
       <div class="metric"><div class="metric-label">kWh consumati stimati</div><div class="metric-value" style="font-size:1.2rem">${Math.round(mr.reduce((a,r)=>a+kwhGiorno(r.data),0)/1000)}k</div><div class="metric-unit">su ${(kwhMese(mese)/1000).toFixed(1)}k mensili${kwhMeseReale(mese)!=null?'':' (stima)'}</div></div>
     `;
@@ -591,13 +653,6 @@ function renderMensile(){
   if(allMesi.length>=1){
     const meseNames=['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
     const saldi=allMesi.map(m=>{
-      // la media mensile (dato GME definitivo) prevale se presente
-      const avg = monthlyAvgs[m];
-      if(avg!=null){
-        const costoMercato = avg/1000*PERDITE*kwhMese(m);
-        const costoFisso = REF/1000*kwhMese(m);
-        return +(costoMercato - costoFisso).toFixed(0);
-      }
       const rr=records.filter(r=>r.data.startsWith(m));
       if(rr.length){
         return +saldoCumulato(rr).toFixed(0);
@@ -623,7 +678,7 @@ function renderMensile(){
 
 function renderTabella(){
   const tbody=document.getElementById('tbody');
-  if(!records.length){tbody.innerHTML='<tr><td colspan="6" class="empty">Nessun dato</td></tr>';return;}
+  if(!records.length){tbody.innerHTML='<tr><td colspan="7" class="empty">Nessun dato</td></tr>';return;}
   let html='';
   records.slice().reverse().forEach(r=>{
     const d = diffGiorno(r);
@@ -633,6 +688,7 @@ function renderTabella(){
       <td><span class="badge badge-day">${tipo}</span></td>
       <td><strong>${fmt(r.pun)}</strong></td>
       <td>${Math.round(d.kwh).toLocaleString('it-IT')}</td>
+      <td>${fmt(prezzoContratto(d.periodo, r.pun))}</td>
       <td><span class="badge ${d.diff>=0?'badge-down':'badge-up'}">${fmtEur(d.diff)}</span></td>
       <td style="color:var(--muted);font-size:.78rem">${r.note||''}</td>
     </tr>`;
